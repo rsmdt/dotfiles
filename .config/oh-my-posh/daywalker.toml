@@ -1,0 +1,133 @@
+console_title_template = ' {{ .Folder }} :: {{if .Root}}Admin{{end}}'
+version = 3
+final_space = true
+
+[palette]
+  t-green = '#50FA7B' # #73daca' # '#9ece6a'
+  t-blue = '#7aa2f7'
+  t-red = '#f7768e'
+  t-white = '#c0caf5'
+
+[secondary_prompt]
+  template = '; '
+  foreground = 'p:t-green'
+
+# [transient_prompt]
+#   template = '; '
+#   foreground = 'p:t-blue'
+#   newline = true
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    type = "os"
+    style = 'plain'
+
+  [[blocks.segments]]
+    type = 'session'
+    style = 'plain'
+    template = '{{ if .SSHSession }}󰌘 {{ .UserName }}@{{ .HostName }} {{ end }}'
+    foreground = 'lightRed'
+
+  [[blocks.segments]]
+    type = 'path'
+    style = 'plain'
+    template = ' {{ .Path }} '
+    foreground = 'lightBlue'
+
+    [blocks.segments.properties]
+      style = 'powerlevel'
+
+  [[blocks.segments]]
+    type = 'git'
+    style = 'plain'
+    # template = '{{ if .UpstreamIcon }}{{ .UpstreamIcon }} {{ end }}{{ .HEAD }}'
+    template = ' {{ if .UpstreamIcon }}{{ .UpstreamIcon }} {{ end }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }} '
+
+    [blocks.segments.properties]
+      fetch_status = true
+      fetch_upstream_icon = true
+      branch_icon = ' '
+      cherry_pick_icon = ' '
+      commit_icon = ' '
+      merge_icon = ' '
+      no_commits_icon = ' '
+      rebase_icon = ' '
+      revert_icon = ' '
+      tag_icon = ' '
+
+  [[blocks.segments]]
+    template = ' '
+    foreground = 'p:t-red'
+    type = 'status'
+    style = 'plain'
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'right'
+  overflow = 'hide'
+
+  [[blocks.segments]]
+    type = 'node'
+    style = 'plain'
+    template = ' {{ .Full }}'
+    foreground = '#9ece6a'
+
+  [[blocks.segments]]
+    type = 'php'
+    style = 'plain'
+    template = ' {{ .Full }}'
+    foreground = '#7aa2f7'
+
+  [[blocks.segments]]
+    type = 'python'
+    style = 'plain'
+    template = ' {{ .Full }}'
+    foreground = '#e0af68'
+
+  [[blocks.segments]]
+    type = 'julia'
+    style = 'plain'
+    template = ' {{ .Full }}'
+    foreground = '#bb9af7'
+
+  [[blocks.segments]]
+    type = 'ruby'
+    style = 'plain'
+    template = ' {{ .Full}}'
+    foreground = '#f7768e'
+
+  [[blocks.segments]]
+    type = 'go'
+    style = 'plain'
+    template = 'ﳑ {{ .Full}}'
+    foreground = '#7dcfff'
+
+  # [[blocks.segments]]
+  #   foreground = 'p:t-white'
+  #   type = 'command'
+  #   style = 'plain'
+  #
+  #   [blocks.segments.properties]
+  #     command = 'git log --pretty=format:%cr -1 || date +%H:%M:%S'
+  #     shell = 'bash'
+
+  [[blocks.segments]]
+    type = 'time'
+    style = 'plain'
+    template = ' {{ .CurrentDate | date .Format }} '
+    # foreground = 'p:t-white'
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    template = ';'
+    foreground = 'p:t-green'
+    type = 'text'
+    style = 'plain'
