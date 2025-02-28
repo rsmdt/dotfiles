@@ -11,12 +11,10 @@ local format = function(opts)
 
 		conform.format({
 			log_level = vim.log.levels.DEBUG,
-			-- bufnr = buf,
-			-- formatters = formatter_names,
 			timeout_ms = 3000,
 			async = false, -- nope, want to wait until finished
 			quiet = false, -- need to know when things don't work
-			lsp_fallback = true, -- "first", -- fallback", -- just in case LSP can help
+			lsp_format = "fallback",
 			-- stop_after_first = true, -- only run the first available formatter in the list
 		})
 	end
@@ -33,13 +31,16 @@ return {
 		notify_on_error = true,
 		formatters_by_ft = {
 			lua = { "stylua" },
-			javascript = { "eslint_d", "eslint", "prettierd", "prettier" },
-			typescript = { "eslint_d", "eslint", "prettierd", "prettier" },
-			javascriptreact = { "eslint_d", "eslint", "prettierd", "prettier" },
-			typescriptreact = { "eslint_d", "eslint", "prettierd", "prettier" },
+			css = { "prettier" },
+			javascript = { "eslint", "prettierd", "prettier" },
+			typescript = { "eslint", "prettierd", "prettier" },
+			javascriptreact = { "eslint", "prettierd", "prettier" },
+			typescriptreact = { "eslint", "prettierd", "prettier" },
+			-- markdown = { "prettier" },
 			yaml = { "prettierd", "prettier" },
-			json = { "prettierd", "prettier" },
+			json = { "jq", "prettierd", "prettier" },
 			sql = { "sqlfluff" }, -- { "sql-formatter", "sqlfmt", "sqlfluff" },
+			python = { "isort", "black" },
 			-- ["*"] = { "trim_whitespace" },
 		},
 		formatters = {

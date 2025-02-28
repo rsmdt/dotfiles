@@ -22,6 +22,16 @@ return {
 				},
 
 				config = {
+					-- root_dir = function(filename, bufnr)
+					-- 	if root_pattern("deno.json", "deno.jsonc")(filename) then
+					-- 		-- If this is a Deno project, don't start ts_ls.
+					-- 		return nil
+					-- 	end
+					--
+					-- 	-- Otherwise, use package.json as the root directory.
+					-- 	return util.root_pattern("package.json")(filename)
+					-- end,
+
 					single_file_support = false,
 					completions = { completeFunctionCalls = true },
 					init_options = {
@@ -51,8 +61,12 @@ return {
 			-- },
 
 			-- denols = {
+			-- 	tools = {
+			-- 		"denols",
+			-- 	},
+			--
 			-- 	config = {
-			-- 		root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
+			-- 		root_dir = root_pattern("deno.json", "deno.jsonc"),
 			-- 	},
 			-- },
 		},

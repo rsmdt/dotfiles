@@ -152,11 +152,11 @@ return {
 		event = { "VeryLazy" },
 		opts = {
 			dismiss_keys = { "j", "k", "<c-c>", "q", "<esc>" },
-			priority = {
-				javascript = {
-					{ pattern = "add import", key = "a", order = 1 },
-				},
-			},
+			-- priority = {
+			-- 	javascript = {
+			-- 		{ pattern = "add import", key = "a", order = 1 },
+			-- 	},
+			-- },
 		},
 	},
 

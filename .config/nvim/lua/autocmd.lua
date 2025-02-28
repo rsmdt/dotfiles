@@ -19,7 +19,7 @@ M.autocmd({ "InsertLeave", "WinEnter" }, {
 })
 
 -- Highlight on yank
-M.autocmd("TextYankPost", {
+M.autocmd({ "TextYankPost" }, {
 	group = "_highlight_yank",
 	desc = "Highlight text on yank",
 	callback = function()
@@ -28,7 +28,7 @@ M.autocmd("TextYankPost", {
 })
 
 -- go to last line when opening a buffer
-M.autocmd("BufReadPost", {
+M.autocmd({ "BufReadPost" }, {
 	group = "_last_line",
 	desc = "Jump to last line when opening file",
 	callback = function()
@@ -56,7 +56,7 @@ M.autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 })
 
 -- close some filetypes with <q>
-M.autocmd("FileType", {
+M.autocmd({ "FileType" }, {
 	group = "_close_with_q",
 	desc = "Close certain filetypes with <q>",
 	pattern = {
@@ -81,13 +81,27 @@ M.autocmd("FileType", {
 })
 
 -- wrap and check for spell in text filetypes
-M.autocmd("FileType", {
+M.autocmd({ "FileType" }, {
 	group = "_spell_checl",
 	desc = "Apply spellchecking for certain files",
 	pattern = { "gitcommit", "markdown" },
 	callback = function()
 		vim.opt_local.wrap = true
 		vim.opt_local.spell = true
+	end,
+})
+
+-- try to fix code actions automaticlly
+M.autocmd({ "BufWritePre" }, {
+	group = "_auto_fix_code_actions",
+	desc = "Automatically fix code actions",
+	callback = function(event)
+		vim.lsp.buf.code_action({
+			filter = function(action)
+				return action.isPreferred
+			end,
+			apply = true,
+		})
 	end,
 })
 

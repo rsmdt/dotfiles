@@ -45,13 +45,14 @@ return {
 	-- below is taken from https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/linting.lua
 	{
 		"mfussenegger/nvim-lint",
-    events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+		events = { "BufWritePost", "BufReadPost", "InsertLeave" },
 		keys = {
 			{ "<leader>l", "<CMD>Lint<CR>", desc = "[L]int code" },
 		},
 		opts = {
 			linters_by_ft = {
 				lua = { "luacheck" },
+				json = { "jsonlint" },
 				javascript = { "eslint" },
 				typescript = { "eslint" },
 				javascriptreact = { "eslint" },
