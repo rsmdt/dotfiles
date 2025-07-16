@@ -1,5 +1,5 @@
 return {
-	"rudionrails/quarry.nvim",
+	"rsmdt/quarry.nvim",
 	opts = {
 		servers = {
 			lua_ls = {

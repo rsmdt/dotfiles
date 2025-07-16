@@ -82,9 +82,8 @@ zinit cdreplay -q
 # TODO:: p10k is not maintained anymore, switch to oh-my-posh
 # Enable prompt
 if [[ $+commands[oh-my-posh] == "1" && "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
-  # eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/tokyonight.toml)"
-  # eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/wopian.toml)"
   eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/daywalker.toml)"
+  # eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.toml)"
   # eval "$(oh-my-posh init zsh)"
 fi
 
@@ -231,3 +230,5 @@ if [[ $+commands[fzf] == "1" ]]; then
     esac
   }
 fi
+
+source "${HOME}/.zshrc.user.zsh"

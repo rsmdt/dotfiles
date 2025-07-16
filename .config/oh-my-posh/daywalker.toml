@@ -71,6 +71,17 @@ final_space = true
   overflow = 'hide'
 
   [[blocks.segments]]
+    type = "executiontime"
+    style = "plain"
+    template = " {{ .FormattedMs }} "
+    foreground = "yellow"
+    
+    [blocks.segments.properties]
+      threshold = 500  # Only show for commands taking longer than 500ms
+      style = "austin"
+      always_enabled = false
+
+  [[blocks.segments]]
     type = 'node'
     style = 'plain'
     template = ' {{ .Full }}'

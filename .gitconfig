@@ -105,4 +105,4 @@
 	defaultBranch = main
 
 [include]
-  path = .gitconfig.user
+  path = ~/.gitconfig.user

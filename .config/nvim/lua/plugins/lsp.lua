@@ -52,12 +52,12 @@ return {
 	{ "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
 
 	{
-		"rudionrails/quarry.nvim",
-		-- dev = true,
+		"rsmdt/quarry.nvim",
+		dev = true,
 		-- event = { "VeryLazy", "User FileOpened" },
 		dependencies = {
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
+			{ "mason-org/mason.nvim", version = "^1.0.0" },
+			{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
 			"neovim/nvim-lspconfig",
 
 			-- needed for additional capabilities

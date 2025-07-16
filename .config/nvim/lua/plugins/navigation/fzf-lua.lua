@@ -6,17 +6,18 @@ return {
 		},
 		cmd = "FzfLua",
 		keys = {
-			["<leader>ff"] = { "<CMD>FzfLua files<CR>", desc = "[F]ind [F]iles" }, -- FIXME: duplicate <leader><space>
-			{ "<leader><leader>", "<CMD>FzfLua files<CR>", desc = "[F]ind [F]iles" },
-			{ "<leader>fr", "<CMD>FzfLua oldfiles<CR>", desc = "[F]ind [R]ecent files" },
-			{ "<leader>fg", "<CMD>FzfLua live_grep<CR>", desc = "[F]find by [G]rep" }, -- FIXME: duplicate <leader>/
-			{ "<leader>/", "<CMD>FzfLua live_grep<CR>", desc = "[F]find by [G]rep" },
-			{ "<leader>fw", "<CMD>FzfLua grep_cword<CR>", desc = "[F]find [W]ord under cursor" },
-			{ "<leader>fk", "<CMD>FzfLua keymaps<CR>", desc = "[F]ind [K]eymaps" },
-			{ "<leader>fd", "<CMD>FzfLua diagnostic_documents<CR>", desc = "[F]ind [D]iagnostic document" },
-			{ "<leader>fb", "<CMD>FzfLua buffers<CR>", desc = "[F]ind [B]uffers" }, -- FIXME: dubplicate <leader><leader>
-			{ "<leader><space>", "<CMD>FzfLua buffers<CR>", desc = "[F]ind [B]uffers" },
-			{ "<leader>fc", "<CMD>FzfLua colorschemes<CR>", desc = "[F]ind [C]colorschemes" },
+			{ "<leader>ff", "<CMD>FzfLua files<CR>", desc = "[F]zf [F]iles" }, -- NOTE: keep for backwards compatibility <leader><space>
+			{ "<leader><leader>", "<CMD>FzfLua files<CR>", desc = "[F]zf [F]iles" },
+			-- { "<leader>fr", "<CMD>FzfLua oldfiles<CR>", desc = "[F]zf [R]ecent files" },
+			{ "<leader>fg", "<CMD>FzfLua live_grep<CR>", desc = "[F]zf by [G]rep" }, -- NOTE: keep for backwards compatibility<leader>/
+			{ "<leader>/", "<CMD>FzfLua live_grep<CR>", desc = "[F]zf by [G]rep" },
+			{ "<leader>fw", "<CMD>FzfLua grep_cword<CR>", desc = "[F]zf [W]ord under cursor" },
+			{ "<leader>fk", "<CMD>FzfLua keymaps<CR>", desc = "[F]zf [K]eymaps" },
+			{ "<leader>fd", "<CMD>FzfLua diagnostic_documents<CR>", desc = "[F]zf [D]iagnostic document" },
+			{ "<leader>fb", "<CMD>FzfLua buffers<CR>", desc = "[F]zf [B]uffers" }, -- NOTE: keep for backwards compatibility <leader><leader>
+			{ "<leader><space>", "<CMD>FzfLua buffers<CR>", desc = "[F]zf [B]uffers" },
+			{ "<leader>fc", "<CMD>FzfLua colorschemes<CR>", desc = "[F]zf [C]colorschemes" },
+			{ "<leader>fr", "<CMD>FzfLua resume<CR>", desc = "[F]zf [R]esume" },
 		},
 		opts = function()
 			local profile = require("fzf-lua.profiles.default-title")
@@ -71,7 +72,7 @@ return {
 
 	------@override change existing keys to use FzfLua
 	---{
-	---	"rudionrails/quarry.nvim",
+	---	"rsmdt/quarry.nvim",
 	---	opts = function()
 	---		return {
 	---			keys = {

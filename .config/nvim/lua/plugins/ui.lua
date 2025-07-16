@@ -233,20 +233,20 @@ return {
 	-- NeoVim greeter, just open nvim (without file)
 	{
 		"goolord/alpha-nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		init = function()
-			vim.api.nvim_create_autocmd("User", {
-				group = vim.api.nvim_create_augroup("_alpha_start", { clear = true }),
-				pattern = "VeryLazy",
-				nested = true,
-				callback = function()
-					require("alpha").start(true)
-				end,
-			})
-		end,
+		dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/plenary.nvim" },
+		-- init = function()
+		-- 	vim.api.nvim_create_autocmd("User", {
+		-- 		group = vim.api.nvim_create_augroup("_alpha_start", { clear = true }),
+		-- 		pattern = "VeryLazy",
+		-- 		nested = true,
+		-- 		callback = function()
+		-- 			require("alpha").start(true)
+		-- 		end,
+		-- 	})
+		-- end,
 		config = function()
-			local alpha = require("alpha")
-			local startify = require("alpha.themes.startify")
+      local startify = require("alpha.themes.startify")
+      startify.file_icons.provider = "devicons"
 
 			startify.section.header.opts.hl = "AlphaHeader"
 			startify.section.top_buttons.val = {
@@ -261,33 +261,33 @@ return {
 				startify.button("l", icons.ui.Package .. " " .. " Lazy", "<CMD>Lazy<CR>"),
 				startify.button("q", icons.ui.Quit .. " " .. " Quit", "<CMD>q<CR>"),
 			}
+			--
+			-- startify.config.opts.autostart = false
 
-			startify.config.opts.autostart = false
+      require("alpha").setup(startify.config)
 
-			alpha.setup(startify.config)
-
-			-- display startup time when available
-			vim.api.nvim_create_autocmd("User", {
-				once = true,
-				pattern = "LazyVimStarted",
-				callback = function()
-					local stats = require("lazy").stats()
-					local val = "⚡ Neovim loaded "
-						.. stats.loaded
-						.. "/"
-						.. stats.count
-						.. " plugins in "
-						.. stats.startuptime
-						.. "ms"
-
-					startify.section.footer.val = {
-						{ type = "padding", val = 1 },
-						{ type = "text", opts = { hl = "Comment" }, val = val },
-					}
-
-					pcall(vim.cmd.AlphaRedraw)
-				end,
-			})
+			-- -- display startup time when available
+			-- vim.api.nvim_create_autocmd("User", {
+			-- 	once = true,
+			-- 	pattern = "LazyVimStarted",
+			-- 	callback = function()
+			-- 		local stats = require("lazy").stats()
+			-- 		local val = "⚡ Neovim loaded "
+			-- 			.. stats.loaded
+			-- 			.. "/"
+			-- 			.. stats.count
+			-- 			.. " plugins in "
+			-- 			.. stats.startuptime
+			-- 			.. "ms"
+			--
+			-- 		startify.section.footer.val = {
+			-- 			{ type = "padding", val = 1 },
+			-- 			{ type = "text", opts = { hl = "Comment" }, val = val },
+			-- 		}
+			--
+			-- 		pcall(vim.cmd.AlphaRedraw)
+			-- 	end,
+			-- })
 		end,
 	},
 }

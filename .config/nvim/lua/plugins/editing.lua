@@ -1,6 +1,27 @@
 return {
+
+	-- 🍿 A collection of QoL plugins for Neovim
+	-- @see https://github.com/folke/snacks.nvim
 	{
-		dir = "~/Code/personal/lua/claude-code.nvim",
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+
+		---@type snacks.Config
+		opts = {
+			-- bigfile = { enabled = true },
+			-- dashboard = { enabled = true },
+			-- explorer = { enabled = true },
+			-- indent = { enabled = true },
+			-- input = { enabled = true },
+			-- picker = { enabled = true },
+			-- notifier = { enabled = true },
+			-- quickfile = { enabled = true },
+			-- scope = { enabled = true },
+			-- scroll = { enabled = true },
+			-- statuscolumn = { enabled = true },
+			-- words = { enabled = true },
+		},
 	},
 
 	--- Enhance builtin native comments
@@ -58,6 +79,24 @@ return {
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = {},
+	},
+
+	{ "sindrets/diffview.nvim" },
+
+	-- An interactive and powerful Git interface for Neovim, inspired by Magit
+	-- https://github.com/NeogitOrg/neogit
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- required
+			"sindrets/diffview.nvim", -- optional - Diff integration
+
+			-- Only one of these is needed.
+			-- "nvim-telescope/telescope.nvim", -- optional
+			"ibhagwan/fzf-lua", -- optional
+			-- "echasnovski/mini.pick", -- optional
+			-- "folke/snacks.nvim", -- optional
+		},
 	},
 
 	-- git in signcolumn, see `:help gitsigns.txt`

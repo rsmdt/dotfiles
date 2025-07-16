@@ -53,7 +53,7 @@ shift + alt - p : yabai -m window --display prev
 # alt + ctrl + shift - l : yabai -m window --resize right:+20:0 # expand window from right
 
 
-# stac
+# stack
 shift + alt - 0x2B : yabai -m window --insert stack
 
 # alt - shift - , : yabai 

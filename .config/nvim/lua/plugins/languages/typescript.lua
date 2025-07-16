@@ -10,7 +10,7 @@ local filetypes = {
 }
 
 return {
-	"rudionrails/quarry.nvim",
+	"rsmdt/quarry.nvim",
 	opts = {
 		servers = {
 			ts_ls = {
@@ -43,7 +43,7 @@ return {
 							includeInlayPropertyDeclarationTypeHints = true,
 							includeInlayFunctionLikeReturnTypeHints = true,
 							includeInlayEnumMemberValueHints = true,
-							importModuleSpecifierPreference = "non-relative",
+							-- importModuleSpecifierPreference = "non-relative",
 						},
 					},
 				},
