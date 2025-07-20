@@ -20,7 +20,7 @@ description: |
 ### Why
 
 - [Business value and user impact]
-- [Integration with existing features]
+- [How this feature enhances the product]
 - [Problems this solves and for whom]
 - ...
 
@@ -76,7 +76,7 @@ Description of how the feature fits into the overall system
 Summarize the core approach to the solution.
 
 - [Architecture Pattern: Describe the approach (e.g., layered, modular, microservice)]
-- [Reuse/Extension of Existing Systems: Mention which parts of the system are reused or extended]
+- [Integration Approach: Describe how this feature integrates with the current system architecture]
 - [Justification: Brief rationale for why this approach fits given the constraints and scope]
 - ...
 
@@ -210,7 +210,7 @@ Provide guidance without constraining the implementation:
 - **Starting Point**: [Which file/component to begin with]
 - **Key Patterns**: [Important patterns to follow from existing code]
 - **Common Pitfalls**: [Known issues to avoid based on codebase analysis]
-- **Integration Points**: [Where this feature connects with existing code]
+- **Integration Points**: [Where this feature connects with the system]
 
 ### Architecture Decisions
 

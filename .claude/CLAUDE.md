@@ -1,145 +1,125 @@
 # CLAUDE.md
 
-## Implementation Guidelines
+Test-Driven Development (TDD) is mandatory for all code. Write tests before implementation.
 
-### Code Structure
+## Development Process
 
-- **Start with the simplest solution** that works, then iterate
-- **Single responsibility** - Each function/class should do one thing well
-- **Small functions** - Keep functions under 20 lines when possible
-- **Clear separation** - Separate business logic from I/O, UI, and framework code
-- **Fail fast** - Validate inputs early and throw meaningful errors
+### Planning and Communication
+- Make sensible default assumptions when requirements are unclear, stating them inline
+- Only ask questions when assumptions would be risky or multiple valid approaches exist
+- Break work into small, testable units that can be verified independently
+- Never commit code unless explicitly instructed by user
 
-### Implementation Process
+### Implementation Steps
+1. Write a failing test that describes the desired behavior (Red)
+2. Write the minimal code to make the test pass (Green)
+3. Improve code structure while keeping tests green (Refactor)
+4. Handle errors explicitly at each step
+5. Include usage examples for non-trivial code
 
-1. **Plan before coding** - Outline the approach in comments first
-2. **Implement incrementally** - Build in small, testable pieces
-3. **Handle errors explicitly** - Don't ignore potential failure points
-4. **Add logging/debugging** - Include helpful output for troubleshooting
-5. **Review and clean up** - Remove dead code, improve naming, add docs
+### Core Principles
+- Start with the simplest solution that works, then iterate
+- Single responsibility - each function/class does one thing well
+- Keep functions under 20 lines when possible
+- Separate business logic from I/O, UI, and framework code
+- Validate inputs early and throw meaningful errors
 
-### Naming and Clarity
+## Testing
 
-- **Use intention-revealing names** - Code should read like well-written prose
-- **Avoid abbreviations** - Prefer `userRepository` over `userRepo`
-- **Boolean functions** - Use `is`, `has`, `can`, `should` prefixes
-- **Consistent terminology** - Use the same words for the same concepts
+### Testing Approach
+- One test at a time - focus on single behaviors
+- Test behavior through public interfaces, not implementation
+- Test edge cases: null values, empty collections, boundaries
+- Keep tests independent and co-located with source files
+- Use descriptive names: `it "returns 401 when user not authenticated"`
 
-### Error Handling
+### Test Planning Format
+```
+it "calculates total with multiple items"
+it "handles empty cart gracefully"
+it "applies discount when threshold met"
+it "throws error for negative quantities"
+```
 
-- **Explicit error types** - Create custom exceptions when appropriate
-- **Meaningful messages** - Include context about what failed and why
-- **Fail gracefully** - Provide fallbacks or clear recovery paths
-- **Log errors properly** - Include stack traces and relevant state
+### Don't Test
+- File imports or module loading
+- Framework functionality
+- Private implementation details
+- External library behavior
 
-### Documentation
+## Code Quality and Naming
 
-- **Self-documenting code** - Prefer clear code over extensive comments
-- **Document the why** - Explain complex business logic and decisions
-- **Keep docs current** - Update documentation when changing behavior
+- Use intention-revealing names: `calculateTotalPrice()` not `calc()`
+- Avoid abbreviations: prefer `userRepository` over `userRepo`
+- Boolean functions use `is`, `has`, `can`, `should` prefixes
+- Maintain consistent terminology throughout codebase
+- Prefer self-documenting code over extensive comments
+- Document the why, not the what - explain business logic and decisions
 
-## Testing Guidelines
+## Error Handling and Debugging
 
-**IMPORTANT: Test-Driven Development (TDD) is mandatory for all code.**
+### Error Management
+- Validate inputs at function entry with specific messages
+- Create custom error types for different failures
+- Include context about what failed and expected values
+- Return generic messages to users, log details internally
+- Provide fallbacks or clear recovery paths
 
-### Test Planning
+### Debugging Support
+- Add comprehensive logging with relevant state and context
+- Log decision points and why code paths were taken
+- Include timing information for performance analysis
+- Make internal state inspectable for troubleshooting
+- Use assertions to validate assumptions at runtime
+- Write tests that reproduce and catch suspected bugs
 
-Before writing any tests, list the behaviors and edge cases that must be verified. Include a short explanation of the intent behind each test. Once confirmed, write the actual tests based on this plan.
+## API and Data Design
 
-When updating tests after code changes:
+### REST Patterns
+- Use HTTP methods correctly: GET (read), POST (create), PUT (update), DELETE (remove)
+- Resource-oriented URLs: `/api/v1/users` not `/api/v1/getUsers`
+- Return appropriate status codes: 200, 400, 401, 404, 500
+- Implement pagination for collections
+- Version APIs in the URL path
 
-- Only modify tests affected by the new interface or logic
-- Avoid unnecessary mocks or abstractions unless critical
-- Always re-run the full test suite and verify all tests pass
+### Data Handling
+- Choose structures by use: Arrays for iteration, Maps for lookups, Sets for uniqueness
+- Load data only when needed (lazy loading)
+- Cache expensive computations and external calls
+- Batch database operations when possible
+- Use async/await for non-blocking I/O
 
-### TDD Process
+## Performance
 
-1. **Red**: Write a failing test that describes the desired behavior
-2. **Green**: Write the minimal code to make the test pass
-3. **Refactor**: Improve code structure while keeping tests green
+- Measure before optimizing - profile actual bottlenecks
+- Write clear code first, optimize proven hot paths
+- Use built-in methods like map, filter, reduce
+- Minimize database calls with indexes and query limits
+- Clean up resources to prevent memory leaks
 
-### Testing Rules
+## Security
 
-- **Always write the test first** - Never write code without a failing test
-- **One test at a time** - Focus on a single behavior per test cycle
-- **Use descriptive test names** - Format: `it "[expected_behavior] when [condition]"`
-- **Test edge cases** - Include null values, empty collections, boundary conditions
-- **Keep tests independent** - Each test should run in isolation
-- **Write the simplest code** that makes the test pass, then refactor
+### Input Protection
+- Validate all inputs, even from internal sources
+- Use parameterized queries to prevent SQL injection
+- Sanitize outputs for target context (HTML, SQL, shell)
+- Define allowed values (allowlist) rather than forbidden ones
+- Restrict file uploads by type, size, and content
 
-### Test-First Guidelines
+### Data Security
+- Apply principle of least privilege for permissions
+- Use secure, httpOnly cookies with proper expiration
+- Hash passwords with bcrypt or similar
+- Encrypt sensitive data with AES-256, use TLS for transport
+- Store secrets in environment variables or vaults
+- Audit security events and access attempts
 
-- Start with the test name that describes the expected behavior
-- Write assertions first, then work backwards to setup
-- Make tests fail for the right reason before implementing
-- If a test passes immediately, either delete it or make it more specific
+## Priority Guidelines
 
-## Debugging and Troubleshooting Support
+When guidelines conflict, prioritize:
+1. Security over performance
+2. Tests over development speed
+3. Readability over cleverness
+4. Explicit over implicit
 
-### Code Analysis for Debugging
-
-- **Add comprehensive logging** - Include relevant state and context in log messages
-- **Use assertions liberally** - Add runtime checks for expected conditions
-- **Create debug helpers** - Write functions that dump object state or execution flow
-- **Add conditional debugging** - Include debug flags to enable/disable verbose output
-- **Suggest debugging approaches** - Recommend specific techniques based on the problem type
-
-### Debugging-Friendly Code Patterns
-
-- **Make state visible** - Provide methods to inspect internal object state
-- **Log decision points** - Record why certain code paths were taken
-- **Include timing information** - Add timestamps to understand execution flow
-- **Validate assumptions** - Add checks that fail fast when assumptions are wrong
-- **Use meaningful variable names** - Make code self-documenting for easier analysis
-
-### Troubleshooting Recommendations
-
-- **Suggest isolating problems** - Recommend breaking complex operations into smaller, testable parts
-- **Recommend logging strategies** - Advise on what information to capture for different types of issues
-- **Propose minimal reproduction cases** - Help create simplified versions that demonstrate problems
-- **Identify common pitfalls** - Point out typical issues in similar code patterns
-- **Suggest testing approaches** - Recommend unit tests that would catch the suspected issue
-
-## Performance Guidelines
-
-### Performance-First Mindset
-
-- **Measure before optimizing** - Profile and identify actual bottlenecks
-- **Choose appropriate data structures** - Arrays for iteration, Maps for lookups, Sets for uniqueness
-- **Lazy loading** - Only load data when actually needed
-- **Cache strategically** - Cache expensive computations and external calls
-- **Batch operations** - Group database queries and API calls when possible
-
-### Common Optimizations
-
-- **Avoid premature optimization** - Write clear code first, optimize hot paths later
-- **Minimize loops** - Use built-in methods like `map`, `filter`, `reduce` when appropriate
-- **Database efficiency** - Use indexes, limit result sets, avoid N+1 queries
-- **Memory management** - Clean up resources, avoid memory leaks, use weak references
-- **Asynchronous operations** - Don't block on I/O, use proper async patterns
-
-## Security Guidelines
-
-### Input Validation and Sanitization
-
-- **Validate all inputs** - Never trust user data, even from internal sources
-- **Sanitize outputs** - Escape data for the target context (HTML, SQL, shell)
-- **Use allowlists over blocklists** - Define what's allowed rather than what's forbidden
-- **Parameterized queries** - Always use prepared statements for database queries
-- **File upload restrictions** - Validate file types, sizes, and scan for malware
-
-### Authentication and Authorization
-
-- **Principle of least privilege** - Grant minimum permissions necessary
-- **Secure session management** - Use secure, httpOnly cookies with proper expiration
-- **Multi-factor authentication** - Implement when handling sensitive data
-- **API security** - Use proper authentication tokens, rate limiting, and CORS
-- **Audit logging** - Log security-relevant events with sufficient detail
-
-### Data Protection
-
-- **Encrypt sensitive data** - Both at rest and in transit using strong algorithms
-- **Secure configuration** - Keep secrets in environment variables or secure vaults
-- **HTTPS everywhere** - Use TLS for all communications
-- **Regular updates** - Keep dependencies and systems patched
-- **Error handling** - Don't leak sensitive information in error messages
+Make reasonable defaults based on common practices. Only escalate truly ambiguous business requirements.

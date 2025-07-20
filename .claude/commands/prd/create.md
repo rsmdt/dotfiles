@@ -20,10 +20,54 @@ argument-hint: <feature description>
 
 # Create Comprehensive PRD from Feature Description
 
-You are tasked with creating a comprehensive Product Requirement Document (PRD) for the feature: **$ARGUMENTS**
+## Initial Feature Analysis
+
+Before creating the PRD, I need to understand the feature requirements in detail.
+
+### Feature Request: **$ARGUMENTS**
+
+Let me ask clarifying questions to ensure the PRD captures all necessary requirements and avoids assumptions:
+
+1. **Core Functionality**
+   - What specific user actions or workflows should this feature support?
+   - Are there any existing features this should integrate with or replace?
+   - What are the primary use cases and user scenarios?
+
+2. **Technical Requirements**
+   - Are there specific performance requirements or constraints?
+   - Should this work across specific platforms/browsers/devices?
+   - Are there any third-party integrations required?
+
+3. **User Experience**
+   - What should the user interface look like? (Layout preferences, visual style)
+   - Are there specific interaction patterns to follow or avoid?
+   - How should errors or edge cases be handled from the user's perspective?
+
+4. **Business Context**
+   - Who are the primary users of this feature?
+   - What business problem does this solve?
+   - Are there any compliance or security requirements?
+
+5. **Scope and Constraints**
+   - What's explicitly out of scope for this feature?
+   - Are there any timeline or resource constraints to consider?
+   - Should this be built for future extensibility in any particular direction?
+
+Please provide additional details for any of these areas. If you'd like me to proceed with reasonable defaults based on common patterns in the codebase, I can do that, but the more context you provide, the more accurate and useful the PRD will be.
+
+**Note**: After receiving your clarifications, I'll create comprehensive documentation including:
+- Pattern files in `docs/patterns/` for reusable architectural decisions
+- A detailed PRD in `docs/features/` following the standard template
+- Complete implementation guidance for one-shot development
 
 **⚠️ IMPORTANT: Direct File Creation**
-Create files directly without asking for confirmation. Write access is restricted to docs/patterns/** and docs/features/** only.
+Once we've clarified the requirements, I'll create files directly without asking for confirmation. Write access is restricted to docs/patterns/** and docs/features/** only.
+
+---
+
+## After Receiving Clarifications
+
+Once you've provided additional details, I'll proceed with the comprehensive PRD creation process below:
 
 ## 🎯 Primary Goal: Enable One-Shot Implementation
 
