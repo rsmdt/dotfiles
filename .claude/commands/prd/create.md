@@ -208,14 +208,17 @@ Each agent should:
 
 **Remember**: The goal is to gather EVERYTHING needed for one-shot implementation. When in doubt, gather more context rather than less.
 
-**Example**: For a "story detail page" feature, you might spawn agents for:
-- UI patterns (how are detail pages structured?)
-- Routing patterns (how are dynamic routes implemented?)
-- Data fetching (how are individual resources loaded?)
-- Layout patterns (full-screen vs sidebar layouts)
-- Navigation patterns (breadcrumbs, back buttons)
+**Dynamic Agent Strategy**:
+Analyze the feature type and requirements to determine research needs. Spawn specialized agents in parallel for each independent aspect requiring investigation. Consider:
+- What needs to be built or changed
+- What existing patterns must be preserved or evolved
+- What external knowledge would reduce implementation risk
+- What cross-cutting concerns apply (security, performance, accessibility)
 
-The exact agents spawned should match the feature's needs.
+The exact agents spawned should match the feature's specific needs.
+
+**Comprehensive Research Mandate**:
+Agents should use ALL available tools to build complete implementation context - this includes searching the web for official documentation, current best practices, security considerations, and proven patterns that complement codebase findings. The goal is zero ambiguity for implementation.
 
 ### Step 3: Consolidate Research Findings
 After all agents return:
@@ -305,7 +308,7 @@ Verify the PRD contains:
 - [ ] Complete implementation checklist with consistent heading levels
 - [ ] Clear, measurable success criteria
 - [ ] Project-specific validation commands (generic, not path-specific)
-- [ ] All discovered patterns referenced
+- [ ] All discovered patterns referenced (both internal and external best practices)
 - [ ] Anti-patterns in single consolidated section
 - [ ] Test specifications with concrete behavior verification (not just existence checks)
 - [ ] Test utilities and mock patterns from codebase included

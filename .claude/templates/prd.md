@@ -17,14 +17,14 @@ description: |
 
 [What needs to be built - be specific about the end state and desires]
 
-### Why
+### Why we build it
 
 - [Business value and user impact]
 - [How this feature enhances the product]
 - [Problems this solves and for whom]
 - ...
 
-### What
+### What will be built
 
 - [User-visible behavior and technical requirements]
 - ...
