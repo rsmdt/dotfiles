@@ -6,11 +6,12 @@ allowed-tools:
   - Grep
   - Read
   - Write(docs/**)
-  - Task
-  - WebSearch
-  - WebFetch
   - MultiEdit(docs/**)
   - Edit(docs/**)
+  - Bash
+  - WebSearch
+  - WebFetch
+  - Task
   - TodoWrite
 argument-hint: <feature description>
 ---
@@ -22,7 +23,7 @@ Creates a comprehensive PRD that enables one-shot implementation by:
 - Gathering complete requirements through clarification
 - Researching codebase patterns via parallel agents
 - Documenting patterns, interfaces, and specifications
-- Following ~/.claude/templates/prd.md structure
+- Following @~/.claude/templates/prd.md structure
 
 ## Process
 
@@ -83,9 +84,22 @@ Deep dive into all aspects of [area]. Extract:
 - Any external services or APIs involved
 - Common pitfalls and best practices
 
+IMPORTANT: Use all available tools including any MCP servers that can help with:
+- Database schemas and queries
+- API documentation and testing
+- Service configurations
+- Development environments
+- External integrations
+
+Prioritize MCP tools when researching:
+- External services (use API/service MCPs)
+- Database structures (use database MCPs)
+- Configuration details (use config/env MCPs)
+- Build/test processes (use dev tool MCPs)
+
 Note whether findings relate to:
 - Internal application code/data
-- External service integrations
+- External service integrations (especially MCP-accessible ones)
 - Reusable patterns or approaches
 
 Return comprehensive findings to enable one-shot implementation.
@@ -139,7 +153,7 @@ Based on research findings, create:
 
 ### 5. PRD Creation
 - Generate feature ID: Check existing files in docs/features/, use next 3-digit number
-- Read and follow ~/.claude/templates/prd.md structure exactly
+- Read and follow @~/.claude/templates/prd.md structure exactly
 - Include ONLY internal changes in the PRD (database, internal APIs, models)
 - Reference external docs in Integration Points section
 - Reference pattern docs in Context Assembly section

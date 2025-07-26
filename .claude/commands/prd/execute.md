@@ -9,10 +9,10 @@ allowed-tools:
   - MultiEdit
   - Edit
   - Bash
-  - TodoWrite
   - WebSearch
   - WebFetch
   - Task
+  - TodoWrite
 argument-hint: <PRD file path or feature ID>
 ---
 
@@ -40,7 +40,7 @@ Find the PRD using the provided argument:
 
 ### 2. Comprehensive Preparation
 Read these resources in order:
-1. **CLAUDE.md files** - Global (`~/.claude/CLAUDE.md`) and project (`./CLAUDE.md`)
+1. **CLAUDE.md files** - Global (`@~/.claude/CLAUDE.md`) and project (`@CLAUDE.md`)
 2. **The entire PRD** - Every section contains critical details
 
 **Required Context Reading**:

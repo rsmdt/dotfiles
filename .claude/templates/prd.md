@@ -46,9 +46,17 @@ implemented_at: null
 
 ## Context Assembly Guide
 
+*Note: Use Claude Code's @ notation for easy file navigation, or relative paths from project root.*
+
 ### Critical Context (Must Read First)
 ```yaml
-- file: path/to/critical/file.ts
+- file: @src/components/critical/file.ts
+  relevance: CRITICAL
+  sections: [lines 50-100, function processOrder]
+  why: "Core business logic that must be preserved"
+  
+# Alternative: relative path format
+- file: ./src/components/critical/file.ts
   relevance: CRITICAL
   sections: [lines 50-100, function processOrder]
   why: "Core business logic that must be preserved"
@@ -56,7 +64,7 @@ implemented_at: null
 
 ### Supporting Context (Read as Needed)
 ```yaml
-- doc: docs/patterns/auth-flow.md
+- doc: @docs/patterns/auth-flow.md
   relevance: MEDIUM
   why: "Follow this authentication pattern"
   
@@ -126,15 +134,16 @@ graph LR
 #### Directory Map
 
 ```
-/source_root
-  /feature_area
-    main_component          # NEW: Primary feature logic
-    data_models            # MODIFY: Extend existing models
-    business_logic         # NEW: Core processing logic
-    integration_layer      # NEW: External service connections
-  /shared
-    utilities              # MODIFY: Add shared functions
-    types                  # NEW: Shared type definitions
+.
+├── src/
+│   ├── feature_area/
+│   │   ├── main_component          # NEW: Primary feature logic
+│   │   ├── data_models            # MODIFY: Extend existing models
+│   │   ├── business_logic         # NEW: Core processing logic
+│   │   └── integration_layer      # NEW: External service connections
+│   └── shared/
+│       ├── utilities              # MODIFY: Add shared functions
+│       └── types                  # NEW: Shared type definitions
 ```
 
 *Note: Actual paths and file names will be determined based on project conventions discovered during implementation.*
@@ -198,10 +207,10 @@ ENTITY: SupportingEntity (NEW)
 #### Integration Points
 ```yaml
 # Where this feature connects to external systems
-# (Full specifications in docs/interfaces/external/)
+# (Full specifications in docs/interfaces/)
 
 External_Service_Name:
-  - doc: docs/interfaces/external/service-name.md
+  - doc: @docs/interfaces/service-name.md
   - sections: [relevant_endpoints, data_formats]
   - integration: "Brief description of how systems connect"
   - critical_data: [data_elements_exchanged]
@@ -396,6 +405,8 @@ And: [No unexpected behavior occurs]
 ## Implementation Checklist
 
 *This checklist provides a framework for implementation. The execute command should adapt phases and tasks based on discovered patterns and project structure.*
+
+*Note: When referencing files in implementation, use Claude Code's @ notation (e.g., @src/models/User.ts) for easy navigation.*
 
 ### Phase 1: Foundation Setup
 - [ ] Read all CRITICAL context files
