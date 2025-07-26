@@ -13,67 +13,98 @@ description: |
   4. **Progressive Success**: Start simple, validate, then enhance
 ---
 
-## Requirement Assessment
+---
+prd_version: 1.0
+feature_id: [3-digit-number]
+feature_title: [kebab-case-feature-name]
+estimated_complexity: [low|medium|high]
+confidence_score: [percentage]
+confidence_summary: "[Brief explanation of confidence level]"
+pending_decisions: "[List key decisions needing user input, or 'none']"
+context_priority: [critical|high|medium|low]
+retrieval_tags: [tag1, tag2, tag3]
+dependencies: [feature-id1, feature-id2]
+implemented_at: null
+---
 
-[What needs to be built - be specific about the end state and desires]
+## Problem Definition
 
-### Why we build it
+### What Problem Are We Solving?
+[2-3 sentences maximum describing the core problem]
 
-- [Business value and user impact]
-- [How this feature enhances the product]
-- [Problems this solves and for whom]
-- ...
+### Who Is Affected?
+- Primary users: [specific user segment]
+- Impact: [quantifiable if possible]
 
-### What will be built
+### Why Now?
+[Business driver or trigger event]
 
-- [User-visible behavior and technical requirements]
-- ...
+### Success Looks Like
+- [ ] [Specific, measurable outcome]
+- [ ] [User-observable change]
+- [ ] [Business metric improvement]
 
-### Success Criteria
+## Context Assembly Guide
 
-- [ ] [Specific measurable outcomes]
-- [ ] ...
+### Critical Context (Must Read First)
+```yaml
+- file: path/to/critical/file.ts
+  relevance: CRITICAL
+  sections: [lines 50-100, function processOrder]
+  why: "Core business logic that must be preserved"
+```
+
+### Supporting Context (Read as Needed)
+```yaml
+- doc: docs/patterns/auth-flow.md
+  relevance: MEDIUM
+  why: "Follow this authentication pattern"
+  
+- url: https://docs.library.com/api
+  relevance: LOW
+  why: "Reference if using advanced features"
+```
+
+### Context Boundaries
+- **In Scope**: [What this feature will change]
+- **Out of Scope**: [What this feature will NOT touch]
+- **Do Not Modify**: [Critical files/systems to avoid]
 
 ## Solution Approach
 
 ### Constraints
 
-List all relevant constraints that impact the design and implementation. These can include:
+- [Technical: Language/framework requirements, performance targets]
+- [Organizational: Coding standards, deployment restrictions]
+- [Security/Compliance: Auth requirements, data protection needs]
 
-- [Technical Constraints (e.g. programming languages, frameworks, platforms, or libraries that must be used; performance or memory constraints; compliance with specific protocols or standards)]
-- [Organizational Constraints (e.g. coding standards, deployment environment restrictions)]
-- [Regulatory/Policy Constraints (e.g. security or privacy regulations, industry standards that the solution must adhere to)]
+### Project Commands
 
-Note: For each constraint, briefly explain how it limits or influences the solution. Categorize constraints if helpful (technical, business, etc.).
+*These commands will be discovered during codebase analysis and populated by the create command:*
 
-### Context and Scope
+```bash
+# Environment Setup
+Install Dependencies: [project-specific install command]
+Environment Setup: [additional setup steps if needed]
+Start Development: [development server command]
 
-Provide all contextual information required to implement this feature in a single attempt. Include:
+# Validation (run after each phase)
+Code Quality: [linting/formatting command] 
+Type Safety: [type checking command, if applicable]
+Run Tests: [test execution command]
+Build Project: [build/compile command]
 
-Description of how the feature fits into the overall system
+# Database (if applicable)
+Database Migration: [migration command]
+Database Seed: [test data setup command]
 
-- What is in scope and out of scope
-- Target directory or module for the implementation
-- List of related files and their role
-- Relevant documentation links (API guides, data schemas, design docs)
-- Environment and language assumptions (e.g., Node.js 18, Docker, Python 3.11)
-- Coding conventions and patterns to follow
-
-```yaml
-# CRITICAL: Include this in your context window
-- file: path/to/file.js
-  why: [Specific section affected by the change or relevance to the feature]
-
-- doc: path/to/documentation.md
-  why: [Specific key insight relevant for the implementation]
-
-- url: https://link.com/to/page.html
-  why: [Pattern to follow, API to integrate, repository of library to use]
+# Additional Project-Specific Commands
+[Any other relevant commands discovered in the codebase]
 ```
 
-### Solution Strategy
+*Note: The execute command should run these validation commands after each implementation phase to ensure code quality and catch issues early.*
 
-Summarize the core approach to the solution.
+### Solution Strategy
 
 - [Architecture Pattern: Describe the approach (e.g., layered, modular, microservice)]
 - [Integration Approach: Describe how this feature integrates with the current system architecture]
@@ -82,54 +113,107 @@ Summarize the core approach to the solution.
 
 ### Building Block View
 
-Component Responsibilities:
+#### Components
 
-- List major modules and their purposes using plain markdown. For detailed interfaces, use pseudocode where appropriate.
-
-```typescript
-// Example (TypeScript-like pseudocode)
-type PromoCodeValidator {
-    validate(code: string): ValidationResult
-}
+```mermaid
+graph LR
+    User --> Component
+    Component --> Hook
+    Hook --> API
+    API --> Database
 ```
 
-Directory structure:
+#### Directory Map
 
-- Present current and target codebase structure as a tree.
-
-```bash
-/src
-  /controllers
-    OrderController.ts      # Modified
-    PromoCodeController.ts  # New
-  /services
-    OrderDiscountService.ts # New
-  /models
-    Order.ts                # Modified
-    PromoCode.ts            # New
+```
+/source_root
+  /feature_area
+    main_component          # NEW: Primary feature logic
+    data_models            # MODIFY: Extend existing models
+    business_logic         # NEW: Core processing logic
+    integration_layer      # NEW: External service connections
+  /shared
+    utilities              # MODIFY: Add shared functions
+    types                  # NEW: Shared type definitions
 ```
 
-Data Models:
+*Note: Actual paths and file names will be determined based on project conventions discovered during implementation.*
 
-- Use pseudocode or schema-style formats to define new data models or updates.
+### Interface Specifications (Internal Changes Only)
 
-```typescript
-type PromoCode = {
-  code: string;
-  validUntil: Date;
-  discountPercent: number;
-  usageLimit: number;
-};
+*Include this section only when the feature involves changes to data structures, internal APIs, or core application interfaces.*
+
+#### Data Storage Changes
+```yaml
+# Database/storage schema modifications
+Table: primary_entity_table
+  ADD COLUMN: new_field (data_type, constraints)
+  MODIFY COLUMN: existing_field (new_constraints) 
+  ADD INDEX: performance_index (fields)
+
+Table: supporting_entity_table (NEW)
+  id: primary_key
+  related_id: foreign_key
+  business_field: data_type, constraints
+```
+
+#### Internal API Changes
+```yaml
+# Application endpoints being added/modified
+Endpoint: Feature Operation
+  Method: HTTP_METHOD
+  Path: /api/version/resource/operation
+  Request:
+    required_field: data_type, validation_rules
+    optional_field: data_type, default_value
+  Response:
+    success:
+      result_field: data_type
+      metadata: object_structure
+    error:
+      error_code: string
+      message: string
+      details: object (optional)
+```
+
+#### Application Data Models
+```pseudocode
+# Core business objects being modified/created
+ENTITY: PrimaryEntity (MODIFIED/NEW)
+  FIELDS: 
+    existing_field: data_type
+    + new_field: data_type (NEW)
+    ~ modified_field: updated_type (CHANGED)
+  
+  BEHAVIORS:
+    existing_method(): return_type
+    + new_method(parameters): return_type (NEW)
+    ~ modified_method(): updated_return_type (CHANGED)
+
+ENTITY: SupportingEntity (NEW)
+  FIELDS: [field_definitions]
+  BEHAVIORS: [method_definitions]
+```
+
+#### Integration Points
+```yaml
+# Where this feature connects to external systems
+# (Full specifications in docs/interfaces/external/)
+
+External_Service_Name:
+  - doc: docs/interfaces/external/service-name.md
+  - sections: [relevant_endpoints, data_formats]
+  - integration: "Brief description of how systems connect"
+  - critical_data: [data_elements_exchanged]
 ```
 
 ### Runtime View
 
-Describe runtime behavior using sequential flow or state interactions.
-
-- Scenario Name: e.g., "User applies promo code"
-- Trigger: What initiates the flow?
-- Steps: Describe interaction step-by-step between components.
-- Error/Alternate Flows: Mention exceptional or failure paths.
+#### Primary Flow: [Main User Action]
+1. User triggers [action]
+2. System validates [what]
+3. Process executes [how]
+4. Result displays [where]
 
 ```plantuml
 @startuml
@@ -144,28 +228,36 @@ PromoCodeController --> UI : Response
 @enduml
 ```
 
-For complex logic, include pseudocode:
-```typescript
-// Example algorithm for complex business logic
-function calculateDiscount(order, promoCode) {
-  // 1. Validate promo code eligibility
-  // 2. Calculate base discount
-  // 3. Apply tier multipliers
-  // 4. Check maximum discount limits
-  // 5. Return final discount amount
-}
+#### Error Handling
+- Invalid input: [specific error message]
+- Network failure: [retry strategy]
+- Business rule violation: [user feedback]
+
+#### Complex Logic (if applicable)
+```
+ALGORITHM: Process Feature Request
+INPUT: user_request, current_state
+OUTPUT: processed_result
+
+1. VALIDATE: input_parameters, user_permissions, system_state
+2. TRANSFORM: raw_input -> structured_data
+3. APPLY_BUSINESS_RULES: 
+   - Check constraints and limits
+   - Calculate derived values
+   - Apply conditional logic
+4. INTEGRATE: update_external_systems, notify_stakeholders
+5. PERSIST: save_changes, log_activities
+6. RESPOND: return_result, update_user_interface
 ```
 
 ### Deployment View
 
-- [Deployment Context: Describe if deployed in an existing app, new service, serverless function, etc]
-- [Environment Configuration: Note required settings, credentials, or env vars]
-- [Infrastructure Components: E.g., new database table, cache instance, job scheduler]
-- [Scaling/Resilience Considerations: Mention load handling, failover, autoscaling if applicable]
+- **Environment**: [Where this runs - client/server/edge]
+- **Configuration**: [Required env vars or settings]
+- **Dependencies**: [External services or APIs needed]
+- **Performance**: [Expected load, caching strategy]
 
 ### Cross-Cutting Concepts
-
-List shared policies or behaviors across the solution:
 
 - [Security: Authentication, authorization, encryption]
 - [Error Handling: Global vs local strategies]
@@ -177,167 +269,184 @@ List shared policies or behaviors across the solution:
 
 Provide concrete examples from the codebase without being overly prescriptive:
 
-##### Common Import Patterns
-```typescript
-// Example imports from similar features
-import { ComponentType } from "@/components/ui/component"
-import { useFeatureHook } from "@/hooks/useFeature"
-```
+*Note: Implementation specifics should follow established patterns in the codebase. The execute command will discover and apply appropriate patterns dynamically.*
 
 ##### Component Structure Pattern
-```typescript
-// Example structure from existing components
-export function FeatureComponent({ prop }: Props) {
-  // Hook usage pattern
-  // Render pattern
-}
+```pseudocode
+# Follow existing component organization in codebase
+COMPONENT: FeatureComponent(properties)
+  INITIALIZE: local_state, external_data_hooks
+  
+  HANDLE: loading_states, error_states, success_states
+  
+  RENDER: 
+    IF loading: loading_indicator
+    IF error: error_display(error_info)
+    IF success: main_content(data, actions)
+```
+
+##### Data Processing Pattern
+```pseudocode
+# Business logic flow
+FUNCTION: process_feature_operation(input, context)
+  VALIDATE: input_format, permissions, preconditions
+  AUTHORIZE: user_access, operation_permissions
+  TRANSFORM: input_data -> business_objects
+  EXECUTE: core_business_logic
+  PERSIST: save_results, update_related_data
+  RESPOND: success_result OR error_information
 ```
 
 ##### Error Handling Pattern
-```typescript
-// Common error handling approach
-try {
-  // Operation
-} catch (error) {
-  // Error handling pattern used in codebase
-}
+```pseudocode
+# Error management approach
+FUNCTION: handle_operation_errors(operation_result)
+  CLASSIFY: error_type (validation, business_rule, system)
+  LOG: error_details, context_information
+  RECOVER: attempt_recovery_if_applicable
+  RESPOND: 
+    user_facing_message(safe_error_info)
+    system_recovery_action(if_needed)
 ```
 
-#### Implementation Hints
+##### Test Pattern
+```pseudocode
+# Testing approach for behavior verification
+TEST_SCENARIO: "Feature operates correctly under normal conditions"
+  SETUP: valid_input_data, required_system_state
+  EXECUTE: feature_operation_with_input
+  VERIFY: 
+    expected_output_produced
+    system_state_updated_correctly
+    side_effects_occurred_as_expected
+    error_conditions_handled_properly
+```
 
-Provide guidance without constraining the implementation:
+#### Integration Points
 
-- **Starting Point**: [Which file/component to begin with]
-- **Key Patterns**: [Important patterns to follow from existing code]
-- **Common Pitfalls**: [Known issues to avoid based on codebase analysis]
-- **Integration Points**: [Where this feature connects with the system]
+- [Where this connects to existing system]
+- [Data flow in/out]
+- [Events triggered/consumed]
 
 ### Architecture Decisions
 
-List decisions and their reasoning:
+1. **[Decision Name]**: [Choice made]
+   - Rationale: [Why this over alternatives]
+   - Trade-offs: [What we accept]
 
-- [ ] [Use centralized PromoCodeValidator, because it promotes reuse and reduces duplication]
-- [ ] ...
+2. **[Decision Name]**: [Choice made]
+   - Rationale: [Why this over alternatives]
+   - Trade-offs: [What we accept]
 
 ### Quality Requirements
-
-State quality attributes the solution must meet
 
 - [Performance: Specific, measurable targets that can be validated]
 - [Usability: User experience requirements]
 - [Security: Access control and data protection needs]
 - [Reliability: Error handling and recovery requirements]
-- ...
-
-Note: Only include requirements that can be validated within the current infrastructure.
 
 ### Test Specifications
 
-Define specific test scenarios with expected behaviors. Tests should verify actual functionality, not just code existence.
+#### Critical Test Scenarios
 
-#### Component Tests (if applicable)
-```typescript
-// Example: Story Detail Page Component
-test("renders story content when story data is loaded", async () => {
-  // Setup: Mock the story data and render component with router context
-  // Action: Wait for content to load
-  // Assert: Verify story title, chapters, and navigation elements are displayed
-});
-
-test("handles missing story with user-friendly error", async () => {
-  // Setup: Mock 404 response from API
-  // Action: Render component with invalid story ID
-  // Assert: Error message is displayed, navigation options available
-});
+**Scenario 1: Primary Happy Path**
+```gherkin
+Given: [System in valid initial state]
+And: [Required preconditions met]
+When: [User performs main action]
+Then: [Expected outcome occurs]
+And: [System state updated correctly]
+And: [Appropriate feedback provided]
 ```
 
-#### Hook/Logic Tests
-```typescript
-// Example: useStoryDetail hook
-test("fetches and returns story data", async () => {
-  // Setup: Mock successful API response
-  // Action: Call hook with story ID
-  // Assert: Returns loading state, then data, no error
-});
-
-test("handles concurrent story fetches correctly", async () => {
-  // Setup: Mock API with delays
-  // Action: Change story ID while first fetch is pending
-  // Assert: Only latest fetch result is used
-});
+**Scenario 2: Validation Error Handling**
+```gherkin
+Given: [System ready for input]
+When: [User provides invalid input]
+Then: [Specific error message displayed]
+And: [System state remains unchanged]
+And: [User can recover/retry]
 ```
 
-#### Integration Tests
-```typescript
-// Example: Story Navigation Flow
-test("navigates between chapters using keyboard shortcuts", async () => {
-  // Setup: Render story with multiple chapters
-  // Action: Simulate arrow key presses
-  // Assert: Chapter changes, URL updates, progress tracked
-});
+**Scenario 3: System Error Recovery**
+```gherkin
+Given: [Normal operation in progress]
+When: [System error occurs during processing]
+Then: [Error handled gracefully]
+And: [User notified appropriately]
+And: [System maintains data integrity]
 ```
 
-**Test Coverage Requirements:**
-- All happy paths (successful operations)
-- Error states (network failures, invalid data)
-- Edge cases (empty data, boundary values)
-- Loading and transition states
-- User interactions (if UI component)
-- Accessibility requirements (if applicable)
+**Scenario 4: Edge Case Handling**
+```gherkin
+Given: [Boundary condition scenario]
+When: [Edge case operation attempted]
+Then: [System handles edge case correctly]
+And: [No unexpected behavior occurs]
+```
+
+#### Test Coverage Requirements
+- **Business Logic**: All decision paths, calculation formulas, validation rules
+- **User Interface**: All interaction flows, error states, loading states, accessibility  
+- **Integration Points**: External service calls, data persistence, event handling
+- **Edge Cases**: Boundary values, empty states, concurrent operations, system limits
+- **Performance**: Response times under expected load, resource usage
+- **Security**: Input validation, authorization checks, data protection
 
 ## Implementation Checklist
 
-Break down the implementation into clear, executable tasks. Order tasks logically for implementation flow.
+*This checklist provides a framework for implementation. The execute command should adapt phases and tasks based on discovered patterns and project structure.*
 
-**Checkbox Usage During Execution:**
-- [ ] = not started
-- [~] = in progress (currently working on)
-- [x] = completed (validated and working)
+### Phase 1: Foundation Setup
+- [ ] Read all CRITICAL context files
+- [ ] Analyze existing codebase patterns for similar features
+- [ ] Set up development environment and dependencies
+- [ ] Create basic project structure following established conventions
+- [ ] Define core data structures and interfaces
+- [ ] **Validation**: Basic structure compiles/validates without errors
 
-**Task Format:**
-- Write actionable tasks that can be executed independently
-- Include subtasks for complex items
-- Note dependencies between tasks
-- Include validation command after each major task
+### Phase 2: Data Layer Implementation  
+- [ ] Implement data storage changes (database migrations, models)
+- [ ] Create data access layer (repositories, queries)
+- [ ] Implement core business logic (validation, calculations)
+- [ ] Add persistence mechanisms (save, update operations)
+- [ ] **Validation**: Data operations work with test data
 
-Structure tasks by logical areas using consistent heading levels:
+### Phase 3: Business Logic & API Layer
+- [ ] Implement core business operations
+- [ ] Add input validation and error handling
+- [ ] Create internal API endpoints (if applicable)
+- [ ] Integrate with external services (following interface specs)
+- [ ] **Validation**: Business logic handles all specified scenarios
 
-```markdown
-### [Component/Module Group]
+### Phase 4: User Interface (if applicable)
+- [ ] Create user interface components
+- [ ] Implement user interaction flows
+- [ ] Add loading states and error displays
+- [ ] Connect UI to business logic
+- [ ] **Validation**: User flows work end-to-end
 
-- [ ] Main task description
-  - [ ] Subtask 1
-  - [ ] Subtask 2
-  - [ ] ...
-  - [ ] Validation: Run relevant tests
+### Phase 5: Testing & Quality Assurance
+- [ ] Implement unit tests for business logic
+- [ ] Add integration tests for workflows
+- [ ] Test error scenarios and edge cases
+- [ ] Verify external service integration behavior
+- [ ] **Validation**: All test scenarios pass
 
-- [ ] Another task
-  - [ ] ...
+### Phase 6: Integration & Deployment
+- [ ] Integrate with existing application components
+- [ ] Update configuration and environment setup
+- [ ] Verify deployment requirements
+- [ ] Run full system validation
+- [ ] **Final Validation**: Complete feature works in target environment
 
-### Tests
+**Task Execution Notes:**
+- Adapt task granularity based on feature complexity
+- Follow TDD approach where specified in CLAUDE.md
+- Run incremental validation after each phase
+- Block on validation failures before proceeding
 
-- [ ] Unit test implementation
-  - [ ] Test setup (mocks, providers, test data)
-  - [ ] Core functionality tests
-  - [ ] Edge case handling
-  - [ ] Error scenarios
-  - [ ] Validation: Run test suite
-
-- [ ] Integration tests (if applicable)
-  - [ ] User flow testing
-  - [ ] Component interaction
-  - [ ] State management
-  - [ ] Validation: Run test suite
-
-### Documentation
-
-- [ ] Update relevant documentation
-- [ ] ...
-```
-
-## Implementation Validation
-
-This section defines multi-level validation to ensure the implementation meets the documented solution approach. Each level builds upon the previous and can be executed sequentially or in parallel by validation agents.
+## Validation Checklist
 
 ### Level 1 – Structural Completeness
 
@@ -373,12 +482,42 @@ This section defines multi-level validation to ensure the implementation meets t
 - [ ] Confirm naming conventions, folder structure, and test coverage thresholds
 - [ ] Identify any drift from previously made architectural decisions
 
----
-
 ## Anti-Patterns to Avoid
 
-- ❌ Don't create new patterns when existing ones work
-- ❌ Don't skip validation because "it should work"
-- ❌ Don't ignore failing tests - fix them
-- ❌ Don't hardcode values that should be config
-- ❌ Don't catch all exceptions - be specific
+### Architecture Anti-Patterns
+- ❌ Creating new architectural patterns when established ones exist
+- ❌ Modifying unrelated systems "while you're there"
+- ❌ Adding external dependencies without checking internal capabilities
+- ❌ Changing core conventions without explicit approval
+- ❌ Implementing business logic in presentation layer
+- ❌ Tight coupling between independent components
+
+### Integration Anti-Patterns
+- ❌ Hardcoding external service URLs or credentials
+- ❌ Ignoring rate limits and retry mechanisms for external services
+- ❌ Exposing internal data structures to external systems
+- ❌ Synchronous calls to external services in critical paths
+- ❌ Assuming external services are always available
+
+### Data Anti-Patterns
+- ❌ Direct database access from presentation layer
+- ❌ Storing business logic in database triggers or procedures
+- ❌ Missing data validation at application boundaries
+- ❌ Inconsistent data state across related entities
+- ❌ Exposing database structure through API responses
+
+### Testing Anti-Patterns
+- ❌ Testing implementation details instead of behavior
+- ❌ Skipping tests for "simple" functions
+- ❌ Not testing error conditions and edge cases
+- ❌ Over-mocking dependencies in integration tests
+- ❌ Writing tests that depend on specific execution order
+- ❌ Ignoring test failures or marking them as "flaky"
+
+### Process Anti-Patterns
+- ❌ Skipping validation steps to move faster
+- ❌ Implementing without understanding existing patterns
+- ❌ Making assumptions about user requirements
+- ❌ Continuing implementation when blocked on critical decisions
+- ❌ Deploying changes without proper testing
+- ❌ Ignoring performance implications until production
