@@ -53,7 +53,6 @@ return {
 
 	{
 		"rsmdt/quarry.nvim",
-		dev = true,
 		-- event = { "VeryLazy", "User FileOpened" },
 		dependencies = {
 			{ "mason-org/mason.nvim", version = "^1.0.0" },
