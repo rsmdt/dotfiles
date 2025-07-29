@@ -1,114 +1,183 @@
 ---
 description: Create a comprehensive Product Requirement Document from a brief description
 allowed-tools:
+  - LS
+  - Glob
+  - Grep
+  - Read
+  - Write(docs/**)
+  - MultiEdit(docs/**)
+  - Edit(docs/**)
+  - Bash
+  - WebSearch
+  - WebFetch
   - Task
   - TodoWrite
-argument-hint: <feature description>
+argument-hint: <description>
 ---
 
 # Create PRD Command
 
 ## Overview
-Creates a comprehensive PRD through sequential sub-agent execution, ensuring proper requirements gathering, thorough research, and structured documentation.
+Creates a comprehensive PRD that enables one-shot implementation by orchestrating specialized subagents and handling critical decision points.
 
-## Process
+**Feature**: $ARGUMENTS
 
-Execute the following steps sequentially. Each step MUST complete before proceeding to the next.
+## Process Flow
 
-### Step 1: Gather Requirements
+Execute phases sequentially, but within each phase, identify opportunities to run multiple agents in parallel for efficiency.
 
-Invoke the requirements gathering sub-agent:
+### Phase 1: Requirements Gathering
+Use the `prd-requirements` subagent to analyze the feature request and gather all necessary clarifications. Pass the feature description and let the agent determine what questions need to be asked.
 
-```
-Task(
-  description="Gather requirements",
-  prompt="Use the prd-requirements subagent to analyze this feature request: $ARGUMENTS",
-  subagent_type="general-purpose"
-)
-```
+**Parallel Opportunity**: If the feature has multiple distinct aspects that require different domain knowledge or perspectives, consider spawning multiple requirement-gathering subagents to analyze each aspect simultaneously.
 
-**CRITICAL: STOP and wait for user response to clarification questions.**
+**Wait for user response before proceeding to Phase 2.**
 
 Note: Only proceed with defaults if user explicitly says to continue.
 
-### Step 2: Research Implementation
+### Phase 2: Technical Research
+Once requirements are clear, analyze them to identify distinct technical areas that need investigation. For each area, spawn a focused `prd-researcher` subagent with only the relevant context.
 
-After user provides requirements or confirms to proceed with defaults:
+**How to Decompose**: Ask yourself:
+- What are the distinct technical challenges in this feature?
+- Which parts could be built independently?
+- What specialized knowledge areas are needed?
+- Where are the natural boundaries in the system?
 
+**Parallel Execution**: Launch all researchers simultaneously in a single Task invocation, each with:
+- Specific research area and scope
+- Only the requirements relevant to their area
+- Clear boundaries to avoid overlap
+
+Consolidate all findings before proceeding to Phase 3.
+
+### Phase 3: Architecture Decisions
+After research completes, review the findings for any critical architecture decisions. If significant choices need to be made that impact implementation approach:
+
+Present them in this format:
 ```
-Task(
-  description="Research patterns",
-  prompt="Use the prd-researcher subagent with these requirements: [include user's full requirements and answers to clarification questions]",
-  subagent_type="general-purpose"
-)
-```
+## Architecture Decision Required
 
-If sub-agent returns "NEED_MORE_CONTEXT":
-- Address the specific requests by gathering additional information
-- Re-invoke the sub-agent with the additional context
-- Continue until research is complete
+### Decision [Number]: [Title]
+**Context**: [Why this decision is needed based on research]
 
-### Step 3: Create Documentation
+**Options**:
+1. **Option A**: [Description]
+   - Pros: [Benefits]
+   - Cons: [Drawbacks]
 
-With research findings complete:
+2. **Option B**: [Description]
+   - Pros: [Benefits]
+   - Cons: [Drawbacks]
 
-```
-Task(
-  description="Document patterns",
-  prompt="Use the prd-documenter subagent to create pattern and interface documentation based on these research findings: [include key research summary]",
-  subagent_type="general-purpose"
-)
-```
+3. ...
 
-If sub-agent returns "NEED_MORE_CONTEXT":
-- Conduct additional research as requested
-- Re-invoke with enhanced findings
-
-### Step 4: Finalize PRD
-
-After documentation is created:
-
-```
-Task(
-  description="Create PRD",
-  prompt="Use the prd-finalizer subagent to create the final PRD with:
-  - Original feature request: $ARGUMENTS
-  - Requirements: [requirements from step 1]
-  - Research findings: [summary from step 2]
-  - Created documentation: [files created in step 3]",
-  subagent_type="general-purpose"
-)
+**Recommendation**: [Your suggested approach and rationale]
 ```
 
-If sub-agent returns "NEED_MORE_CONTEXT":
-- Gather the missing information through research or user clarification
-- Re-invoke with complete context
-- The PRD MUST follow the template at ~/.claude/templates/prd.md
+Only interrupt for decisions that significantly impact the implementation approach. Document any pending decisions if the user doesn't respond.
 
-## Orchestration Notes
+### Phase 4: Documentation Creation
+Use the `prd-documenter` subagent to create pattern and interface documentation based on:
+- Research findings from Phase 2
+- Architecture decisions from Phase 3
+- Identified reusable patterns and external integrations
 
-- Each step builds on the previous one - pass relevant context forward
-- If user says "continue with defaults" at requirements stage, document assumptions
-- The sub-agents are defined in ~/.claude/agents/ and handle specific responsibilities
-- Monitor for any architecture decisions that need user input between steps
+**Parallel Opportunity**: If multiple patterns or interfaces need documentation, spawn multiple `prd-documenter` agents to create them simultaneously. Consider:
+- What distinct patterns were discovered?
+- Which external interfaces need specification?
+- Are there independent documentation needs?
 
-## Handling Feedback Loops
+The agents will create appropriate documentation in docs/patterns/ and docs/interfaces/.
 
-When a sub-agent returns "NEED_MORE_CONTEXT":
-1. Identify what specific information is needed
-2. Determine the best source:
-   - User clarification (for requirements/business logic)
+### Phase 5: Validation Check
+Before finalizing, check if any critical information is still missing. If there are gaps:
+
+```
+## Missing Information for Complete PRD
+
+The following information is needed for a comprehensive PRD:
+
+1. **[Gap Title]**: [What's missing and why it matters]
+2. **[Gap Title]**: [What's missing and why it matters]
+
+Would you like me to:
+A) Create the PRD with documented assumptions
+B) Wait for you to provide this information
+
+[Include what assumptions would be made for option A]
+```
+
+### Phase 6: PRD Creation
+Use the `prd-finalizer` subagent to create the comprehensive PRD. Provide:
+- Original feature request
+- All requirements and clarifications
+- Research findings and technical analysis
+- Architecture decisions made
+- References to created documentation
+
+The agent will follow the template at ~/.claude/templates/prd.md exactly.
+
+### Phase 7: Confidence Assessment
+After PRD creation, provide an implementation confidence assessment:
+
+```
+## One-Shot Implementation Confidence: [X]%
+
+✅ High Confidence Factors:
+- [What enables one-shot success]
+
+⚠️ Risk Factors:
+- [What might cause issues]
+
+Missing Information:
+- [Gaps that could block implementation]
+
+Recommendation: [Ready for implementation / Needs clarification on X]
+```
+
+## Handling subagent Feedback
+
+If any subagent returns "NEED_MORE_CONTEXT":
+1. Analyze what specific information is needed
+2. Gather it through:
+   - User clarification (for business requirements)
    - Additional research (for technical details)
-   - Previous sub-agent re-run (for missing context)
-3. Gather the information and re-invoke the sub-agent
-4. Continue until the sub-agent completes successfully
+   - Re-running previous agents with more context
+3. Re-invoke the subagent with the additional information
 
-This ensures comprehensive PRD creation even when initial context is incomplete.
+## Key Principles
+- Execute phases sequentially, but maximize parallelization within each phase
+- When a phase could benefit from multiple agents, launch them in a single Task invocation
+- Pass comprehensive context between phases
+- Only interrupt for critical decisions
+- Document all assumptions clearly
+- Ensure the PRD enables successful one-shot implementation
 
-## Final Output
+## Parallelization Guidelines
+- Identify independent tasks within each phase
+- Launch multiple agents simultaneously when they don't depend on each other
+- Use clear, specific prompts for each parallel agent
+- Consolidate results before moving to the next phase
+- Example: In Phase 2, you might launch 3-5 research agents in parallel to investigate different technical areas
 
-The process will result in:
-1. Comprehensive PRD in docs/features/
+## Research Decomposition Guidelines
+When identifying research areas in Phase 2, consider:
+- **Technical layers**: Frontend, backend, database, infrastructure
+- **Feature aspects**: Core logic, integrations, security, performance
+- **Cross-cutting concerns**: Logging, monitoring, error handling
+- **Dependencies**: External services, libraries, APIs
+
+Aim for 3-7 focused research areas for most features. Each researcher should have:
+- Clear scope and boundaries
+- Specific questions to answer
+- Relevant subset of requirements
+- No overlap with other researchers
+
+## Expected Outputs
+1. Comprehensive PRD in docs/features/[XXX]-[feature-name].md
 2. Pattern documentation in docs/patterns/
 3. Interface specifications in docs/interfaces/
-4. Confidence assessment for implementation success
+4. Clear confidence assessment
+5. Documentation of any assumptions or pending decisions
