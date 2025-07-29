@@ -82,9 +82,9 @@ implemented_at: null
 
 ### Constraints
 
-- [Technical: Language/framework requirements, performance targets]
-- [Organizational: Coding standards, deployment restrictions]
-- [Security/Compliance: Auth requirements, data protection needs]
+- [Technical, e.g. Language/framework requirements, performance targets]
+- [Organizational, e.g. Coding standards, deployment restrictions]
+- [Security/Compliance, e.g. Auth requirements, data protection needs]
 
 ### Project Commands
 
@@ -114,9 +114,9 @@ Database Seed: [test data setup command]
 
 ### Solution Strategy
 
-- [Architecture Pattern: Describe the approach (e.g., layered, modular, microservice)]
-- [Integration Approach: Describe how this feature integrates with the current system architecture]
-- [Justification: Brief rationale for why this approach fits given the constraints and scope]
+- [Architecture Pattern, e.g. Describe the approach (e.g., layered, modular, microservice)]
+- [Integration Approach, e.g. Describe how this feature integrates with the current system architecture]
+- [Justification, e.g. Brief rationale for why this approach fits given the constraints and scope]
 - ...
 
 ### Building Block View
@@ -268,11 +268,11 @@ OUTPUT: processed_result
 
 ### Cross-Cutting Concepts
 
-- [Security: Authentication, authorization, encryption]
-- [Error Handling: Global vs local strategies]
-- [Performance Optimization: Caching, batching, async patterns]
-- [i18n/L10n: Support for multi-language or regional content]
-- [Logging/Auditing: System observability practices]
+- [Security, e.g. Authentication, authorization, encryption]
+- [Error Handling, e.g. Global vs local strategies]
+- [Performance Optimization, e.g. Caching, batching, async patterns]
+- [i18n/L10n, e.g. Support for multi-language or regional content]
+- [Logging/Auditing, e.g. System observability practices]
 
 #### Implementation Patterns
 
