@@ -46,7 +46,7 @@ implemented_at: null
 
 ## Context Assembly Guide
 
-*Note: Use Claude Code's @ notation for easy file navigation, or relative paths from project root.*
+*[INSTRUCTION: Use Claude Code's @ notation for easy file navigation, or relative paths from project root. This note should not appear in the final PRD.]*
 
 ### Critical Context (Must Read First)
 ```yaml
@@ -88,7 +88,7 @@ implemented_at: null
 
 ### Project Commands
 
-*These commands will be discovered during codebase analysis and populated by the create command:*
+*[INSTRUCTION: These commands will be discovered during codebase analysis and populated by the create command. This note should not appear in the final PRD.]*
 
 ```bash
 # Environment Setup
@@ -110,7 +110,7 @@ Database Seed: [test data setup command]
 [Any other relevant commands discovered in the codebase]
 ```
 
-*Note: The execute command should run these validation commands after each implementation phase to ensure code quality and catch issues early.*
+*[INSTRUCTION: The execute command should run these validation commands after each implementation phase to ensure code quality and catch issues early. This note should not appear in the final PRD.]*
 
 ### Solution Strategy
 
@@ -146,11 +146,11 @@ graph LR
 │       └── types                  # NEW: Shared type definitions
 ```
 
-*Note: Actual paths and file names will be determined based on project conventions discovered during implementation.*
+*[INSTRUCTION: Actual paths and file names will be determined based on project conventions discovered during implementation. This note should not appear in the final PRD.]*
 
 ### Interface Specifications (Internal Changes Only)
 
-*Include this section only when the feature involves changes to data structures, internal APIs, or core application interfaces.*
+*[INSTRUCTION: Include this section only when the feature involves changes to data structures, internal APIs, or core application interfaces. This note should not appear in the final PRD.]*
 
 #### Data Storage Changes
 ```yaml
@@ -278,7 +278,7 @@ OUTPUT: processed_result
 
 Provide concrete examples from the codebase without being overly prescriptive:
 
-*Note: Implementation specifics should follow established patterns in the codebase. The execute command will discover and apply appropriate patterns dynamically.*
+*[INSTRUCTION: Implementation specifics should follow established patterns in the codebase. The execute command will discover and apply appropriate patterns dynamically. This note should not appear in the final PRD.]*
 
 ##### Component Structure Pattern
 ```pseudocode
@@ -404,94 +404,46 @@ And: [No unexpected behavior occurs]
 
 ## Implementation Checklist
 
-*This checklist provides a framework for implementation. The execute command should adapt phases and tasks based on discovered patterns and project structure.*
+*[INSTRUCTION: Create a detailed implementation checklist based on the feature requirements, architecture, and discovered patterns. Organize tasks into logical phases that can be executed sequentially, with clear dependencies and validation points. This entire instruction block should not appear in the final PRD.]*
 
-*Note: When referencing files in implementation, use Claude Code's @ notation (e.g., @src/models/User.ts) for easy navigation.*
+### Checklist Structure Guidelines
 
-### Phase 1: Foundation Setup
-- [ ] Read all CRITICAL context files
-- [ ] Analyze existing codebase patterns for similar features
-- [ ] Set up development environment and dependencies
-- [ ] Create basic project structure following established conventions
-- [ ] Define core data structures and interfaces
-- [ ] **Validation**: Basic structure compiles/validates without errors
+Organize implementation tasks into phases that make sense for this specific feature:
+- Group related tasks that can be worked on together
+- Identify dependencies between tasks
+- Include validation points after each significant milestone
+- Consider the feature's architecture when determining phases
 
-### Phase 2: Data Layer Implementation  
-- [ ] Implement data storage changes (database migrations, models)
-- [ ] Create data access layer (repositories, queries)
-- [ ] Implement core business logic (validation, calculations)
-- [ ] Add persistence mechanisms (save, update operations)
-- [ ] **Validation**: Data operations work with test data
+Each task should be:
+- [ ] Specific and actionable
+- [ ] Independently verifiable as complete
+- [ ] Sized appropriately (not too large, not too granular)
 
-### Phase 3: Business Logic & API Layer
-- [ ] Implement core business operations
-- [ ] Add input validation and error handling
-- [ ] Create internal API endpoints (if applicable)
-- [ ] Integrate with external services (following interface specs)
-- [ ] **Validation**: Business logic handles all specified scenarios
+Include validation commands from the Project Commands section at appropriate checkpoints.
 
-### Phase 4: User Interface (if applicable)
-- [ ] Create user interface components
-- [ ] Implement user interaction flows
-- [ ] Add loading states and error displays
-- [ ] Connect UI to business logic
-- [ ] **Validation**: User flows work end-to-end
+### Example Phase Structure (adapt based on feature):
 
-### Phase 5: Testing & Quality Assurance
-- [ ] Implement unit tests for business logic
-- [ ] Add integration tests for workflows
-- [ ] Test error scenarios and edge cases
-- [ ] Verify external service integration behavior
-- [ ] **Validation**: All test scenarios pass
+**Phase X: [Descriptive Phase Name]**
+- [ ] [Specific task with clear completion criteria]
+- [ ] [Another related task]
+- [ ] **Validation**: [Specific validation command or check]
 
-### Phase 6: Integration & Deployment
-- [ ] Integrate with existing application components
-- [ ] Update configuration and environment setup
-- [ ] Verify deployment requirements
-- [ ] Run full system validation
-- [ ] **Final Validation**: Complete feature works in target environment
-
-**Task Execution Notes:**
-- Adapt task granularity based on feature complexity
-- Follow TDD approach where specified in CLAUDE.md
-- Run incremental validation after each phase
-- Block on validation failures before proceeding
+*[INSTRUCTION: The number and nature of phases should match the feature complexity. Simple features might need 2-3 phases, complex ones might need 5-7. Always include context file reading as an early task. Always end with integration testing and final validation. This note should not appear in the final PRD.]*
 
 ## Validation Checklist
 
-### Level 1 – Structural Completeness
+*[INSTRUCTION: Define validation criteria to ensure the implementation meets all requirements. Use project-specific validation commands identified during research. This note should not appear in the final PRD.]*
 
-- [ ] Confirm all tasks in the implementation checklist are marked complete
-- [ ] Verify each referenced file/module exists in the codebase
-- [ ] Check that directory structure matches the target layout
+### Validation Areas to Consider:
 
-### Level 2 – Interface and Data Contract Validation
+- **Code Quality**: Linting, formatting, type checking
+- **Functionality**: All test scenarios pass, features work as specified
+- **Integration**: Component interactions, API contracts, data flow
+- **Performance**: Response times, resource usage, scalability
+- **Security**: Input validation, authorization, data protection
+- **Standards**: Code conventions, architectural patterns, best practices
 
-- [ ] Verify interfaces match described method signatures
-- [ ] Check that all schemas match examples in the document
-- [ ] Validate that the correct models were extended/created
-
-### Level 3 – Runtime Behavior Simulation
-
-- [ ] Type checking is successful
-- [ ] Code linting is successful
-- [ ] Code formatting is consistent
-- [ ] All tests pass
-- [ ] Build completes without errors
-- [ ] No runtime errors detected
-- [ ] All automated test cases implemented and passing
-
-### Level 4 – Quality Attribute Verification
-
-- [ ] Performance: Does the system meet response time/load expectations?
-- [ ] Security: Are all access controls and data protection mechanisms in place?
-- [ ] Usability: Are user-facing messages clear and localized if needed?
-
-### Level 5 – Design Alignment and Standards Compliance
-
-- [ ] Review if the implementation follows team architectural patterns
-- [ ] Confirm naming conventions, folder structure, and test coverage thresholds
-- [ ] Identify any drift from previously made architectural decisions
+Structure validation tasks based on available project commands and the feature's specific requirements.
 
 ## Anti-Patterns to Avoid
 

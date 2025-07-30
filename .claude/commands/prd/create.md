@@ -28,7 +28,7 @@ Creates a comprehensive PRD that enables one-shot implementation by orchestratin
 Execute phases sequentially, but within each phase, identify opportunities to run multiple agents in parallel for efficiency.
 
 ### Phase 1: Requirements Gathering
-Use the `prd-requirements` subagent to analyze the feature request and gather all necessary clarifications. Pass the feature description and let the agent determine what questions need to be asked.
+Use the `the-business-analyst` subagent to analyze the feature request and gather all necessary clarifications. Pass the feature description and let the agent determine what questions need to be asked.
 
 **Parallel Opportunity**: If the feature has multiple distinct aspects that require different domain knowledge or perspectives, consider spawning multiple requirement-gathering subagents to analyze each aspect simultaneously.
 
@@ -37,7 +37,7 @@ Use the `prd-requirements` subagent to analyze the feature request and gather al
 Note: Only proceed with defaults if user explicitly says to continue.
 
 ### Phase 2: Technical Research
-Once requirements are clear, analyze them to identify distinct technical areas that need investigation. For each area, spawn a focused `prd-researcher` subagent with only the relevant context.
+Once requirements are clear, analyze them to identify distinct technical areas that need investigation. For each area, spawn a focused `the-architect` subagent with only the relevant context.
 
 **How to Decompose**: Ask yourself:
 - What are the distinct technical challenges in this feature?
@@ -79,12 +79,12 @@ Present them in this format:
 Only interrupt for decisions that significantly impact the implementation approach. Document any pending decisions if the user doesn't respond.
 
 ### Phase 4: Documentation Creation
-Use the `prd-documenter` subagent to create pattern and interface documentation based on:
+Use the `the-technical-writer` subagent to create pattern and interface documentation based on:
 - Research findings from Phase 2
 - Architecture decisions from Phase 3
 - Identified reusable patterns and external integrations
 
-**Parallel Opportunity**: If multiple patterns or interfaces need documentation, spawn multiple `prd-documenter` agents to create them simultaneously. Consider:
+**Parallel Opportunity**: If multiple patterns or interfaces need documentation, spawn multiple `the-technical-writer` agents to create them simultaneously. Consider:
 - What distinct patterns were discovered?
 - Which external interfaces need specification?
 - Are there independent documentation needs?
@@ -110,7 +110,7 @@ B) Wait for you to provide this information
 ```
 
 ### Phase 6: PRD Creation
-Use the `prd-finalizer` subagent to create the comprehensive PRD. Provide:
+Use the `the-product-manager` subagent to create the comprehensive PRD. Provide:
 - Original feature request
 - All requirements and clarifications
 - Research findings and technical analysis
