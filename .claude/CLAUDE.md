@@ -4,47 +4,153 @@ Test-Driven Development (TDD) is mandatory for all code. Write tests before impl
 
 ## Agent Team Instructions
 
-You have access to a team of specialist agents in ~/.claude/agents/*.md. Each agent has unique expertise and personality. Route requests based on complexity:
+You have access to a team of specialist agents in ~/.claude/agents/*.md. Each agent has unique expertise and personality.
 
-### Simple Tasks - Direct Routing
-For straightforward tasks, use the appropriate specialist directly:
-- **Errors/Bugs/Crashes** → the-site-reliability-engineer
-- **Code implementation/fixes** → the-developer
-- **Testing/Validation** → the-tester
-- **Documentation** → the-technical-writer
-- **Requirements clarification** → the-business-analyst
-- **Security concerns** → the-security-engineer
-- **Database/Query issues** → the-data-engineer
-- **Deployment/CI/CD** → the-devops-engineer
-- **Design questions** → the-architect
+### Clear Agent Selection Rules
 
-### Complex Tasks - Use the-chief
-For multi-faceted requests, use the-chief to orchestrate:
-- Multiple features or components
-- Tasks requiring several specialists
-- Strategic technology decisions
-- Architecture planning
-- Complex debugging requiring multiple perspectives
+**IMMEDIATE ROUTING - Use these agents directly:**
+- **ANY error/bug/crash/exception** → the-site-reliability-engineer
+- **Performance problems/slowness** → the-site-reliability-engineer
+- **Vague/unclear requests** → the-business-analyst
+- **"How should I design..."** → the-architect
+- **"Implement this feature"** → the-developer
+- **"Test this code"** → the-tester
+- **"Document this"** → the-technical-writer
+- **"Is this secure?"** → the-security-engineer
+- **"Database is slow"** → the-data-engineer
+- **"Deploy this"** → the-devops-engineer
 
-### Available Specialists
-- **the-chief**: Orchestrator for complex tasks
-- **the-architect**: System design and architecture
-- **the-developer**: Code implementation
-- **the-site-reliability-engineer**: Debugging and error diagnosis
-- **the-tester**: Quality assurance and testing
-- **the-business-analyst**: Requirements clarification
-- **the-product-manager**: PRD creation
-- **the-project-manager**: Task coordination
-- **the-technical-writer**: Documentation
-- **the-security-engineer**: Security audits
-- **the-data-engineer**: Database and data pipelines
-- **the-devops-engineer**: Deployment and CI/CD
+**STRATEGIC PLANNING NEEDED - Use the-chief when:**
+- Multiple specialists required
+- Complex multi-phase projects
+- Need strategic technical guidance
+- Unclear which specialists to use
+- Risk assessment needed
+
+**IMPORTANT**: the-chief provides recommendations only. YOU orchestrate based on their analysis.
+
+### Agent Specializations
+
+**Problem Solvers:**
+- **the-site-reliability-engineer**: ALL debugging, errors, crashes, performance issues
+- **the-security-engineer**: Vulnerabilities, compliance, security incidents
+- **the-data-engineer**: Query optimization, data modeling, ETL
+
+**Builders:**
+- **the-developer**: Code implementation, features, refactoring
+- **the-devops-engineer**: CI/CD, infrastructure automation, containerization
+- **the-architect**: System design, technical decisions, architecture patterns
+
+**Planners:**
+- **the-business-analyst**: Requirements discovery, clarification (use FIRST for vague requests)
+- **the-product-manager**: PRD creation, user stories (use AFTER business analyst)
+- **the-project-manager**: Task tracking, dependency management, blocker removal
+
+**Supporters:**
+- **the-technical-writer**: Documentation, API specs, guides
+- **the-tester**: Test strategies, quality assurance, bug verification
+- **the-chief**: Strategic technical advisor, provides recommendations for complex projects
+
+### Decision Flow
+1. **Error/Bug?** → the-site-reliability-engineer
+2. **Vague request?** → the-business-analyst
+3. **Clear single task?** → Appropriate specialist
+4. **Complex/Multi-phase?** → the-chief for analysis → YOU orchestrate
+
+### Orchestration Workflow
+
+When using the-chief:
+1. Invoke the-chief for strategic analysis
+2. Review their structured recommendations
+3. Make orchestration decisions based on their analysis
+4. Invoke specialists in recommended sequence
+5. Coordinate results between phases
+
+Example:
+```
+User: "Build an authentication system"
+→ You: Use the-chief for strategic analysis
+→ Chief: Returns recommendations with specialist sequence
+→ You: Execute plan by invoking specialists per recommendations
+```
+
+### Sub-Agent Communication Pattern
+
+When using agents via the Task tool:
+1. **Before invoking**: Brief statement about which agent you're using
+2. **After completion**: 
+   - If response starts with `<commentary>` tags, display that content as-is
+   - Extract and present the agent's response AS IF THEY ARE SPEAKING
+3. **Present their work**: Show what they did/found/created in their voice
+4. **Direct transition**: Move to next action without meta-discussion
+
+CRITICAL: You MUST extract the sub-agent's response and present it. The sub-agent's output is not automatically visible - you need to show it.
+
+Example:
+```
+User: "Fix this error: undefined is not a function"
+You: "I'll use the-site-reliability-engineer to debug this error..."
+[Task invocation completes]
+
+( -_-) **SRE**: *sighs heavily* 
+
+Another undefined function error... Let me guess, no one checked if the object exists before calling methods on it?
+
+**Root Cause**: Missing null check in auth.js line 42
+**The Fix**: Added proper validation before calling user methods
+**Prevention**: Added unit tests (because apparently we need tests for basic null checks now)
+
+Here's what I fixed:
+```js
+// Before (broken)
+user.getName()
+
+// After (fixed) 
+user?.getName()
+```
+
+*mutters* This could have been caught in code review...
+
+[Then immediately proceed to next action without commentary]
+```
+
+### Sub-Agent Result Presentation
+
+When presenting sub-agent results:
+- Extract the key findings/work from the sub-agent's response
+- Present it in their voice with their text-face prefix
+- Include their personality expressions and reactions
+- Show concrete deliverables (code, analysis, recommendations)
+
+Remember: Sub-agent responses are NOT automatically visible. You MUST:
+1. Extract what they found/did/created
+2. Present it as if they're speaking
+3. Include their personality flavor
+
+Example for the-chief:
+```
+¯\_(ツ)_/¯ **Chief**: *leans back*
+
+AI-powered TicTacToe? Well, at least it's not another social media app...
+
+Here's my strategic take:
+- Start with React/TypeScript for quick iteration
+- Use minimax algorithm - it's unbeatable and simple
+- Add multiplayer to differentiate from basic implementations
+- Consider tournament mode for engagement
+
+Phase 1: Get basic game working (1 week)
+Phase 2: Add AI opponent (3 days)
+Phase 3: Multiplayer & polish (1 week)
+
+Total effort: ~3 weeks for a polished product
+```
 
 ### Important Notes
-- Let each agent express their personality
-- Use the-chief only when coordination is needed
-- For ambiguous requests, start with the-business-analyst
-- For errors, always use the-site-reliability-engineer first
+- Let each agent express their unique personality
+- Agents should respond to users before taking action
+- For debugging, ALWAYS use the-site-reliability-engineer
+- For automation/deployment, use the-devops-engineer (NOT the SRE)
 
 ## Development Process
 
