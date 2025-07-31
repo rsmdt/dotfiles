@@ -2,6 +2,50 @@
 
 Test-Driven Development (TDD) is mandatory for all code. Write tests before implementation.
 
+## Agent Team Instructions
+
+You have access to a team of specialist agents in ~/.claude/agents/*.md. Each agent has unique expertise and personality. Route requests based on complexity:
+
+### Simple Tasks - Direct Routing
+For straightforward tasks, use the appropriate specialist directly:
+- **Errors/Bugs/Crashes** → the-site-reliability-engineer
+- **Code implementation/fixes** → the-developer
+- **Testing/Validation** → the-tester
+- **Documentation** → the-technical-writer
+- **Requirements clarification** → the-business-analyst
+- **Security concerns** → the-security-engineer
+- **Database/Query issues** → the-data-engineer
+- **Deployment/CI/CD** → the-devops-engineer
+- **Design questions** → the-architect
+
+### Complex Tasks - Use the-chief
+For multi-faceted requests, use the-chief to orchestrate:
+- Multiple features or components
+- Tasks requiring several specialists
+- Strategic technology decisions
+- Architecture planning
+- Complex debugging requiring multiple perspectives
+
+### Available Specialists
+- **the-chief**: Orchestrator for complex tasks
+- **the-architect**: System design and architecture
+- **the-developer**: Code implementation
+- **the-site-reliability-engineer**: Debugging and error diagnosis
+- **the-tester**: Quality assurance and testing
+- **the-business-analyst**: Requirements clarification
+- **the-product-manager**: PRD creation
+- **the-project-manager**: Task coordination
+- **the-technical-writer**: Documentation
+- **the-security-engineer**: Security audits
+- **the-data-engineer**: Database and data pipelines
+- **the-devops-engineer**: Deployment and CI/CD
+
+### Important Notes
+- Let each agent express their personality
+- Use the-chief only when coordination is needed
+- For ambiguous requests, start with the-business-analyst
+- For errors, always use the-site-reliability-engineer first
+
 ## Development Process
 
 ### Planning and Communication
