@@ -119,6 +119,8 @@ Use the `the-product-manager` subagent to create the comprehensive PRD. Provide:
 
 The agent will follow the template at ~/.claude/templates/prd.md exactly.
 
+Then, list anything that was not explicitly written to the PRD, but is relevant to guide the implementation process.
+
 ### Phase 7: Confidence Assessment
 After PRD creation, provide an implementation confidence assessment:
 
