@@ -22,7 +22,7 @@
   :effect false,
   :theme false},
  :logseq-bonofix-theme
- {:version "v3.8.6", :repo "sansui233/logseq-bonofix-theme", :effect false, :theme true},
+ {:version "v3.10.4", :repo "sansui233/logseq-bonofix-theme", :effect false, :theme true},
  :logseq-tabs
  {:version "v1.19.4", :repo "pengx17/logseq-plugin-tabs", :effect true, :theme false},
  :logseq-reference-styles
@@ -36,7 +36,7 @@
   :effect false,
   :theme false},
  :logseq-mark-map
- {:version "v0.4.0", :repo "vipzhicheng/logseq-plugin-mark-map", :effect false, :theme false}
+ {:version "v0.4.6", :repo "vipzhicheng/logseq-plugin-mark-map", :effect false, :theme false}
  :logseq-heatmap {:version "v2.4.3", :repo "pengx17/logseq-plugin-heatmap", :effect true, :theme false}
  :logseq-automatic-linker {:version "1.5.5", :repo "sawhney17/logseq-automatic-linker", :effect false, :theme false}
  :logseq-awesome-content {:version "v1.2.1", :repo "yoyurec/logseq-awesome-content", :effect true, :theme false}
@@ -47,4 +47,5 @@
  :logseq-dracula-theme {:version "0.0.5", :repo "dracula/logseq", :effect false, :theme true}
  :logseq-monokai {:version "v0.0.2", :repo "tzcl/logseq-monokai", :effect false, :theme true}
  :logseq-diagrams-as-code {:version "0.0.21", :repo "npgrosser/logseq-diagrams-as-code", :effect false, :theme false}
- :logseq-catppuccin {:version "v0.4.1", :repo "catppuccin/logseq", :effect false, :theme true}}
+ :logseq-catppuccin {:version "v0.4.1", :repo "catppuccin/logseq", :effect false, :theme true}
+ :logseq-vim-shortcuts {:version "v0.1.22", :repo "vipzhicheng/logseq-plugin-vim-shortcuts", :effect true, :theme false}}

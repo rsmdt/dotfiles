@@ -179,7 +179,7 @@ return {
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		dependencies = {
-			{ "echasnovski/mini.indentscope", version = false },
+			{ "nvim-mini/mini.indentscope", version = false },
 		},
 		event = { "User FileOpened" },
 		config = function()
@@ -245,8 +245,8 @@ return {
 		-- 	})
 		-- end,
 		config = function()
-      local startify = require("alpha.themes.startify")
-      startify.file_icons.provider = "devicons"
+			local startify = require("alpha.themes.startify")
+			startify.file_icons.provider = "devicons"
 
 			startify.section.header.opts.hl = "AlphaHeader"
 			startify.section.top_buttons.val = {
@@ -264,7 +264,7 @@ return {
 			--
 			-- startify.config.opts.autostart = false
 
-      require("alpha").setup(startify.config)
+			require("alpha").setup(startify.config)
 
 			-- -- display startup time when available
 			-- vim.api.nvim_create_autocmd("User", {

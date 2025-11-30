@@ -1,3 +1,4 @@
+# zmodload zsh/zprof
 setopt autocd
 
 # TODO: https://github.com/tmuxinator/tmuxinator
@@ -33,10 +34,6 @@ if [[ $+commands[brew] == "0" ]]; then
   if [[ -x /opt/homebrew/bin/brew ]]; then
     eval $(/opt/homebrew/bin/brew shellenv)
   fi
-  #
-  #   # FIXME: This is only for HBL IBM package. Remove once done.
-  #   alias brew86="arch -x86_64 /usr/local/bin/brew"
-  # fi
 fi
 
 if [[ $+commands[git] == "0" ]]; then
@@ -81,7 +78,8 @@ zinit cdreplay -q
 
 # TODO:: p10k is not maintained anymore, switch to oh-my-posh
 # Enable prompt
-if [[ $+commands[oh-my-posh] == "1" && "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
+# if [[ $+commands[oh-my-posh] == "1" && "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
+if [[ $+commands[oh-my-posh] == "1" ]]; then
   eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/daywalker.toml)"
   # eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.toml)"
   # eval "$(oh-my-posh init zsh)"
@@ -232,3 +230,5 @@ if [[ $+commands[fzf] == "1" ]]; then
 fi
 
 source "${HOME}/.zshrc.user.zsh"
+
+# zprof

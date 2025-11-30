@@ -41,13 +41,10 @@
 [merge]
   summary = true
   verbosity = 1
+	ff = false
 
 [apply]
   whitespace = nowarn
-
-[branch]
-  autosetupmerge = true
-  mergeoptions = --no-ff
 
 [pull]
   rebase = true
@@ -75,6 +72,7 @@
   # instead of a/b/c/d as prefixes for patches
   mnemonicprefix = true
   algorithm = patience
+	relative = true
   ; tool = vimdiff
 
 ; @seet  https://github.com/dandavison/delta

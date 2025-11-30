@@ -103,5 +103,10 @@ config.font_rules = {
 	},
 }
 
+config.keys = {
+	-- enable SHIFT+ENTER for newline
+	{ key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
+}
+
 -- and finally, return the configuration to wezterm
 return config

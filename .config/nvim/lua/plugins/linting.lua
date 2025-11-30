@@ -58,7 +58,7 @@ return {
 				javascriptreact = { "eslint" },
 				typescriptreact = { "eslint" },
 				ruby = { "rubocop" },
-				python = { "pylint" },
+				python = { "ruff" },
 				sql = { "sqlfluff" },
 				svelte = { "eslint" },
 			},

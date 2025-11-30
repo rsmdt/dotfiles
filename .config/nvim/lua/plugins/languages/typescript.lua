@@ -1,13 +1,13 @@
-local root_pattern = require("lspconfig.util").root_pattern
+-- local root_pattern = require("lspconfig.util").root_pattern
 
-local filetypes = {
-	"javascript",
-	"javascriptreact",
-	"javascript.jsx",
-	"typescript",
-	"typescriptreact",
-	"typescript.tsx",
-}
+-- local filetypes = {
+-- 	"javascript",
+-- 	"javascriptreact",
+-- 	"javascript.jsx",
+-- 	"typescript",
+-- 	"typescriptreact",
+-- 	"typescript.tsx",
+-- }
 
 return {
 	"rsmdt/quarry.nvim",

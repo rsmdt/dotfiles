@@ -1,5 +1,5 @@
 return {
-	"echasnovski/mini.files",
+	"nvim-mini/mini.files",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	-- cmd = "MiniFiles",
 	keys = {

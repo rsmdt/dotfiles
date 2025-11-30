@@ -41,8 +41,8 @@ return {
 			yaml = { "prettier" },
 			json = { "prettier" },
 			sql = { "prettier", "sqlfluff" }, -- { "sql-formatter", "sqlfmt", "sqlfluff" },
-			python = { "isort", "black" },
-			-- ["*"] = { "trim_whitespace" },
+			python = { "ruff" },
+			["*"] = { "trim_whitespace" },
 		},
 		formatters = {
 			sqlfluff = {
