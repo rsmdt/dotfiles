@@ -5,10 +5,13 @@ system_type=$(uname -s)
 DIVIDER="\n----------------------------------------------------------------------------"
 DIR=$(dirname -- "${BASH_SOURCE[0]}")
 
+# XDG Base Directory - needed for brew bundle --global
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
 echo "[YADM] Running bootstrap from $0"
 
 if ! which brew > /dev/null; then
-  echo "[YADM] Homebrew is not insalled, exiting..."
+  echo "[YADM] Homebrew is not installed, exiting..."
   exit 1
 fi
 
@@ -25,9 +28,24 @@ if [ ! -d ~/.config/tmux/plugins/tpm ]; then
   git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 fi
 
-if which n >/dev/null; then
-  echo "${DIVIDER}\n[YADM] Node setup (https://github.com/tj/n)"
-  n lts
+if which mise >/dev/null; then
+  echo "${DIVIDER}\n[YADM] Installing tools via mise (https://mise.jdx.dev)"
+  mise trust ~/.config/mise/config.toml
+  mise install
+fi
+
+if ! which claude >/dev/null; then
+  echo "${DIVIDER}\n[YADM] Installing Claude Code CLI"
+  curl -fsSL https://claude.ai/install.sh | sh
+fi
+
+if which claude >/dev/null; then
+  echo "${DIVIDER}\n[YADM] Setting up Claude Code plugins"
+  claude plugin marketplace add rsmdt/the-startup
+  claude plugin install team@the-startup
+  claude plugin install start@the-startup
+  claude plugin install frontend-design@claude-plugins-official
+  claude plugin install greptile@claude-plugins-official
 fi
 
 # if which nvim > /dev/null; then
@@ -42,9 +60,8 @@ disableSpotlight="${disableSpotlight}:=n"
 case $disableSpotlight in
   [Yy]* )
     sudo mdutil -a -i off
-
-    break;;
-  * ) echo "Skipping...";
+    ;;
+  * ) echo "Skipping...";;
 esac
 
 echo "\n[YADM] done."

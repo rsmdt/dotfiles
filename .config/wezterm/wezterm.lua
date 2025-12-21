@@ -37,20 +37,26 @@ local function scheme_for_appearance(appearance)
 	end
 end
 
--- config.mouse_bindings = {
--- 	-- Bind 'Up' event of CTRL-Click to open hyperlinks
--- 	{
--- 		event = { Up = { streak = 1, button = "Left" } },
--- 		mods = "SUPER",
--- 		action = wezterm.action.OpenLinkAtMouseCursor,
--- 	},
--- 	-- Disable the 'Down' event of CTRL-Click to avoid weird program behaviors
--- 	{
--- 		event = { Down = { streak = 1, button = "Left" } },
--- 		mods = "SUPER",
--- 		action = wezterm.action.Nop,
--- 	},
--- }
+config.mouse_bindings = {
+	-- Cmd+Click to open hyperlinks (works inside tmux with mouse mode on)
+	{
+		event = { Up = { streak = 1, button = "Left" } },
+		mods = "SUPER",
+		action = wezterm.action.OpenLinkAtMouseCursor,
+	},
+	-- Disable the 'Down' event of Cmd-Click to avoid weird program behaviors
+	{
+		event = { Down = { streak = 1, button = "Left" } },
+		mods = "SUPER",
+		action = wezterm.action.Nop,
+	},
+	-- Triple-click to select command output (requires shell integration)
+	{
+		event = { Down = { streak = 3, button = "Left" } },
+		action = wezterm.action.SelectTextAtMouseCursor("SemanticZone"),
+		mods = "NONE",
+	},
+}
 
 wezterm.on("window-config-reloaded", function(window, pane)
 	local overrides = window:get_config_overrides() or {}
@@ -106,6 +112,19 @@ config.font_rules = {
 config.keys = {
 	-- enable SHIFT+ENTER for newline
 	{ key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
+
+	-- Jump to previous/next prompt (requires shell integration)
+	{ key = "UpArrow", mods = "SHIFT|SUPER", action = wezterm.action.ScrollToPrompt(-1) },
+	{ key = "DownArrow", mods = "SHIFT|SUPER", action = wezterm.action.ScrollToPrompt(1) },
+
+	-- Quick config editing with Cmd+,
+	{
+		key = ",",
+		mods = "SUPER",
+		action = wezterm.action.SpawnCommandInNewTab({
+			args = { os.getenv("EDITOR") or "nvim", wezterm.config_file },
+		}),
+	},
 }
 
 -- and finally, return the configuration to wezterm

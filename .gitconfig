@@ -32,6 +32,10 @@
   cleanup = !git branch --merged | egrep -v "(main|master|develop)"
   root = rev-parse --show-toplevel
 
+  # Difftastic - syntax-aware structural diff
+  dft = difftool --tool=difftastic
+  dftlog = -c diff.external=difft log -p --ext-diff
+
 [format]
   ; pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
 
@@ -73,7 +77,15 @@
   mnemonicprefix = true
   algorithm = patience
 	relative = true
-  ; tool = vimdiff
+
+# Difftastic: structural diff that understands syntax
+# Use with: git difftool (or alias 'dft' below)
+# @see https://difftastic.wilfred.me.uk/
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
+
+[difftool]
+  prompt = false
 
 ; @seet  https://github.com/dandavison/delta
 [delta]
