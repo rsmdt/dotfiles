@@ -131,8 +131,7 @@ return {
 					oklch_color = {
 						pattern = "oklch%(%s*[%d%.]+%%?%s+[%d%.]+%s+%d+%.?%d*%s*%)",
 						group = function(_, match)
-							local l, c, h =
-								match:match("oklch%(%s*([%d%.]+)%%?%s+([%d%.]+)%s+([%d%.]+)%s*%)")
+							local l, c, h = match:match("oklch%(%s*([%d%.]+)%%?%s+([%d%.]+)%s+([%d%.]+)%s*%)")
 							l, c, h = tonumber(l), tonumber(c), tonumber(h)
 							if not l or not c or not h then
 								return nil
@@ -148,8 +147,7 @@ return {
 					oklab_color = {
 						pattern = "oklab%(%s*[%d%.]+%%?%s+%-?[%d%.]+%s+%-?[%d%.]+%s*%)",
 						group = function(_, match)
-							local l, a, b =
-								match:match("oklab%(%s*([%d%.]+)%%?%s+(%-?[%d%.]+)%s+(%-?[%d%.]+)%s*%)")
+							local l, a, b = match:match("oklab%(%s*([%d%.]+)%%?%s+(%-?[%d%.]+)%s+(%-?[%d%.]+)%s*%)")
 							l, a, b = tonumber(l), tonumber(a), tonumber(b)
 							if not l or not a or not b then
 								return nil
@@ -330,20 +328,33 @@ return {
 	},
 
 	-- Highlight, edit, and navigate code, see `:help nvim-treesitter`
+	--
+	-- Migrated to the `main`-branch rewrite (the legacy `master` API was
+	-- removed upstream). There is no `nvim-treesitter.configs.setup()` /
+	-- central `opts` table anymore:
+	--   * parser install -> require("nvim-treesitter").install(...)
+	--   * highlighting    -> vim.treesitter.start() in a FileType autocmd
+	--   * auto_install    -> install-on-demand inside that autocmd
+	-- Dropped (no `main`-branch support): `incremental_selection` (removed
+	-- from core) and `nvim-treesitter-textsubjects` (no `main` version).
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		build = ":TSUpdate",
 		dependencies = {
-			"nvim-treesitter/nvim-treesitter-textobjects", -- Additional text objects via treesitter
-			"RRethy/nvim-treesitter-textsubjects", -- Location and syntax aware text objects which *do what you mean*
+			"nvim-treesitter/nvim-treesitter-textobjects", -- Additional text objects via treesitter (currently unconfigured)
 			-- 'nvim-treesitter/playground',                  -- show treesitter info in vim
 		},
-		build = ":TSUpdate",
-
 		event = { "VeryLazy" },
-		opts = {
-			auto_install = true,
+		config = function()
+			local ts = require("nvim-treesitter")
 
-			ensure_installed = {
+			-- the javascript filetype will use the typescript parser
+			vim.treesitter.language.register("typescript", "javascript")
+
+			-- Parsers we always want available (was `ensure_installed`).
+			-- No-op for parsers that are already installed.
+			ts.install({
 				"vim",
 				"regex",
 				"lua",
@@ -354,56 +365,56 @@ return {
 				"typescript",
 				"rust",
 				"toml",
-			},
-			ignore_install = { "javascript" },
+			})
 
-			-- indent = {
-			-- 	enable = true,
-			-- },
-
-			highlight = {
-				enable = true,
-				use_languagetree = true,
+			-- Enable highlighting per-buffer. Folds in the old `highlight`,
+			-- large-file `disable`, and `auto_install` options.
+			local function enable(buf)
+				if not vim.api.nvim_buf_is_valid(buf) then
+					return
+				end
 
 				-- disable treesitter highlight for large files
-				disable = function(_, bufnr) -- Disable in large C++ buffers
-					-- return lang == "cpp" and api.nvim_buf_line_count(bufnr) > 50000
-					return vim.api.nvim_buf_line_count(bufnr) > 10000
+				if vim.api.nvim_buf_line_count(buf) > 10000 then
+					return
+				end
+
+				local lang = vim.treesitter.language.get_lang(vim.bo[buf].filetype)
+				if not lang then
+					return
+				end
+
+				if vim.tbl_contains(ts.get_installed("parsers"), lang) then
+					pcall(vim.treesitter.start, buf, lang)
+				elseif vim.tbl_contains(ts.get_available(), lang) then
+					-- auto-install a missing-but-available parser, then start
+					ts.install(lang):await(function(err)
+						if err then
+							return
+						end
+						vim.schedule(function()
+							if vim.api.nvim_buf_is_valid(buf) then
+								pcall(vim.treesitter.start, buf, lang)
+							end
+						end)
+					end)
+				end
+			end
+
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("nvim_treesitter_highlight", { clear = true }),
+				callback = function(args)
+					enable(args.buf)
 				end,
-			},
+			})
 
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<C-space>",
-					node_incremental = "<C-space>",
-					scope_incremental = false,
-					node_decremental = "<bs>",
-				},
-			},
-
-			-- nvim-treesitter-textsubjects plugin
-			textsubjects = {
-				enable = true,
-				-- prev_selection = ",", -- (Optional) keymap to select the previous selection
-				keymaps = {
-					["."] = "textsubjects-smart",
-					[";"] = "textsubjects-container-outer",
-					-- ["i;"] = "textsubjects-container-inner",
-					["i;"] = {
-						"textsubjects-container-inner",
-						desc = "Select inside containers (classes, functions, etc.)",
-					},
-				},
-			},
-		},
-		config = function(_, opts)
-			vim.treesitter.language.register("typescript", "javascript") -- the javascript filetype will use the tsx parser
-
-			require("nvim-treesitter.configs").setup(opts)
-
-			-- -- Show treesitter capture group for textobject under cursor (nvim-treesitter/playground)
-			-- vim.keymap.set('n', '<C-e>', ':TSHighlightCapturesUnderCursor<CR>', { noremap = true, silent = true })
+			-- Apply to buffers already open before this plugin lazy-loaded
+			-- (VeryLazy), since their FileType event has already fired.
+			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_loaded(buf) then
+					enable(buf)
+				end
+			end
 		end,
 	},
 
@@ -447,6 +458,15 @@ return {
 	{
 		"OXY2DEV/markview.nvim",
 		lazy = false,
+	},
+
+	{
+		"gunasekar/markview-smart-tables.nvim",
+		dependencies = { "OXY2DEV/markview.nvim" },
+		opts = {
+			wrap_width = 0.9, -- max table width: fraction of the window (0<n<=1) or absolute column count (n>1)
+			wrap_minwidth = 5, -- smallest a column may shrink to before long words are hard-broken
+		},
 	},
 
 	{

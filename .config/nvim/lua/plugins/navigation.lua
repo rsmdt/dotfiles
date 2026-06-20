@@ -15,8 +15,7 @@ return {
 
 	-- tmux navigation
 	{
-		"christoomey/vim-tmux-navigator",
-		dependencies = { "jby/tmux.vim" },
+    "christoomey/vim-tmux-navigator",
 		cmd = {
 			"TmuxNavigateLeft",
 			"TmuxNavigateDown",
