@@ -540,15 +540,36 @@ return {
 		},
 	},
 
+	-- MDX (Markdown + JSX) support: registers the `mdx` filetype, maps it onto the
+	-- markdown treesitter parser (same idiom as the typescript<-javascript alias above),
+	-- and ships after/queries injections so embedded import/export/JSX are highlighted.
+	-- Loaded eagerly: its after/plugin script must run `vim.filetype.add` BEFORE any
+	-- .mdx buffer is opened, so it can't be `ft`-lazy-loaded on its own filetype.
+	-- Needs the markdown/markdown_inline/tsx/typescript parsers (already in ts.install).
+	-- @see https://github.com/davidmh/mdx.nvim
+	{
+		"davidmh/mdx.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		lazy = false,
+	},
+
 	-- Markdown preview inside NeoVim
 	-- @see https://github.com/OXY2DEV/markview.nvim
 	{
 		"OXY2DEV/markview.nvim",
-		lazy = false,
+		ft = { "markdown", "quarto", "rmd", "typst", "asciidoc", "mdx" },
+		opts = {
+			preview = {
+				-- Defaults + "mdx": mdx maps to the markdown parser, so markview
+				-- renders the prose/markdown syntax in .mdx the same as .md.
+				filetypes = { "markdown", "quarto", "rmd", "typst", "asciidoc", "mdx" },
+			},
+		},
 	},
 
 	{
 		"gunasekar/markview-smart-tables.nvim",
+		ft = { "markdown", "quarto", "rmd", "typst", "asciidoc", "mdx" },
 		dependencies = { "OXY2DEV/markview.nvim" },
 		opts = {
 			wrap_width = 0.9, -- max table width: fraction of the window (0<n<=1) or absolute column count (n>1)
