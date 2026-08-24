@@ -23,7 +23,7 @@ M.autocmd({ "TextYankPost" }, {
 	group = "_highlight_yank",
 	desc = "Highlight text on yank",
 	callback = function()
-		vim.highlight.on_yank()
+		vim.hl.on_yank()
 	end,
 })
 
@@ -114,7 +114,7 @@ M.autocmd({ "BufWritePre" }, {
 			return
 		end
 
-		local file = vim.loop.fs_realpath(event.match) or event.match
+		local file = vim.uv.fs_realpath(event.match) or event.match
 		vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
 	end,
 })
