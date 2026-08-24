@@ -91,20 +91,6 @@ M.autocmd({ "FileType" }, {
 	end,
 })
 
--- try to fix code actions automaticlly
-M.autocmd({ "BufWritePre" }, {
-	group = "_auto_fix_code_actions",
-	desc = "Automatically fix code actions",
-	callback = function(event)
-		vim.lsp.buf.code_action({
-			filter = function(action)
-				return action.isPreferred
-			end,
-			apply = true,
-		})
-	end,
-})
-
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
 M.autocmd({ "BufWritePre" }, {
 	group = "_auto_create_dir",
