@@ -1,5 +1,31 @@
 local icons = require("core.icons")
 
+local wincmd_for_direction = { left = "h", down = "j", up = "k", right = "l" }
+local tmux_command_for_direction = { left = "Left", down = "Down", up = "Up", right = "Right" }
+
+local function focus_herdr_pane(direction)
+	local herdr = vim.env.HERDR_BIN_PATH
+	if herdr == nil or herdr == "" then
+		herdr = "herdr"
+	end
+	vim.fn.system({ herdr, "pane", "focus", "--direction", direction, "--pane", vim.env.HERDR_PANE_ID })
+end
+
+local function navigate_split_or_pane(direction)
+	local window_before = vim.api.nvim_get_current_win()
+	vim.cmd("wincmd " .. wincmd_for_direction[direction])
+
+	if vim.api.nvim_get_current_win() ~= window_before then
+		return
+	end
+
+	if vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= "" then
+		focus_herdr_pane(direction)
+	elseif vim.env.TMUX and vim.env.TMUX ~= "" then
+		pcall(vim.cmd, "TmuxNavigate" .. tmux_command_for_direction[direction])
+	end
+end
+
 return {
 	{ import = "plugins.navigation" },
 
@@ -13,21 +39,24 @@ return {
 		},
 	},
 
-	-- tmux navigation
+	-- @see https://github.com/paulbkim-dev/vim-herdr-navigation
 	{
-    "christoomey/vim-tmux-navigator",
-		cmd = {
-			"TmuxNavigateLeft",
-			"TmuxNavigateDown",
-			"TmuxNavigateUp",
-			"TmuxNavigateRight",
-		},
-		keys = {
-			{ "<C-h>", "<CMD> TmuxNavigateLeft <CR>" },
-			{ "<C-j>", "<CMD> TmuxNavigateDown <CR>" },
-			{ "<C-k>", "<CMD> TmuxNavigateUp <CR>" },
-			{ "<C-l>", "<CMD> TmuxNavigateRight <CR>" },
-		},
+		"christoomey/vim-tmux-navigator",
+		cmd = { "TmuxNavigateLeft", "TmuxNavigateDown", "TmuxNavigateUp", "TmuxNavigateRight" },
+		init = function()
+			vim.g.tmux_navigator_no_mappings = 1
+
+			for lhs, direction in pairs({
+				["<C-h>"] = "left",
+				["<C-j>"] = "down",
+				["<C-k>"] = "up",
+				["<C-l>"] = "right",
+			}) do
+				vim.keymap.set("n", lhs, function()
+					navigate_split_or_pane(direction)
+				end, { silent = true, noremap = true, desc = "Navigate " .. direction .. " (split/pane)" })
+			end
+		end,
 	},
 
 	-- multiple cursors
