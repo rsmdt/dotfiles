@@ -23,7 +23,8 @@ vim.diagnostic.config({
 return {
 	-- LSP and tools setup
 	{
-		"williamboman/mason.nvim",
+		"mason-org/mason.nvim",
+		version = "^2.0.0", -- quarry.nvim v5 targets the mason.nvim v2 (mason-org) API
 		cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
 		opts = {
 			ui = {
@@ -53,10 +54,11 @@ return {
 
 	{
 		"rsmdt/quarry.nvim",
-		-- event = { "VeryLazy", "User FileOpened" },
+		dir = "/Users/irudi/Code/personal/lua/quarry.nvim", -- local checkout with deferred-setup changes; restore version = "^5.0.0" once released
+		event = { "VeryLazy" },
 		dependencies = {
-			{ "mason-org/mason.nvim", version = "^1.0.0" },
-			{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
+			{ "mason-org/mason.nvim", version = "^2.0.0" },
+			{ "mason-org/mason-lspconfig.nvim", version = "^2.0.0" },
 			"neovim/nvim-lspconfig",
 
 			-- needed for additional capabilities
