@@ -1,0 +1,101 @@
+onboarding = false
+
+[ui]
+show_agent_labels_on_pane_borders = true
+agent_panel_scope = "all"
+
+agent_panel_sort = "spaces"
+status_indicators = "symbols"
+
+sidebar_width           = 26      # auto-scales to workspace names
+sidebar_min_width       = 18
+sidebar_max_width       = 36
+sidebar_start_collapsed = false   # startup-only: takes effect next launch
+sidebar_collapsed_mode  = "compact"   # or "hidden"
+
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", "tab"],
+  ["agent"],
+]
+
+# per-agent overrides, keyed by canonical agent id (case-sensitive)
+[ui.sidebar.agents.rows_by_agent]
+claude = [
+  ["state_icon", "agent", "state_text"],
+  ["terminal_title_stripped"],
+  ["workspace", "tab"],
+]
+
+[ui.sidebar.spaces]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace"],
+  ["branch", "git_status"],
+]
+
+[keys]
+prefix = "ctrl+b"
+
+split_vertical   = ["prefix+l", "prefix+v"]
+split_horizontal = ["prefix+j", "prefix+minus"]
+
+focus_pane_left  = "ctrl+alt+h"
+focus_pane_down  = "ctrl+alt+j"
+focus_pane_up    = "ctrl+alt+k"
+focus_pane_right = "ctrl+alt+l"
+
+previous_tab      = ["prefix+p", "alt+left", "alt+h"]
+next_tab          = ["prefix+n", "alt+right", "alt+l"]
+move_tab_previous = "shift+alt+left"
+move_tab_next     = "shift+alt+right"
+
+previous_workspace = ["alt+up", "alt+k"]
+next_workspace     = ["alt+down", "alt+j"]
+
+switch_tab       = "prefix+1..9"
+switch_workspace = "prefix+shift+1..9"
+
+new_tab       = ["prefix+c", "alt+c"]
+close_pane    = ["prefix+x", "alt+x"]
+new_workspace = ["prefix+shift+n", "alt+n"]
+
+goto     = ["prefix+s", "prefix+g", "alt+s"]
+settings = "prefix+shift+s"
+
+[[keys.command]]
+key = "shift+alt+up"
+type = "shell"
+command = "sh $HOME/.config/herdr/move-workspace.sh -1"
+description = "move workspace up"
+
+[[keys.command]]
+key = "shift+alt+down"
+type = "shell"
+command = "sh $HOME/.config/herdr/move-workspace.sh +1"
+description = "move workspace down"
+
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "vim-herdr-navigation.left"
+description = "navigate left (vim/herdr)"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "vim-herdr-navigation.down"
+description = "navigate down (vim/herdr)"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "vim-herdr-navigation.up"
+description = "navigate up (vim/herdr)"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "vim-herdr-navigation.right"
+description = "navigate right (vim/herdr)"

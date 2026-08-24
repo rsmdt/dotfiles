@@ -62,6 +62,11 @@ if which claude >/dev/null; then
   claude plugin install greptile@claude-plugins-official
 fi
 
+if which herdr >/dev/null; then
+  echo "${DIVIDER}\n[YADM] Setting up Herdr plugins"
+  herdr plugin install -y paulbkim-dev/vim-herdr-navigation
+fi
+
 # if which nvim > /dev/null; then
 #   echo "[YADM] NeoVim setup"
 #   nvim '+PlugUpdate' '+PlugClean' '+qa'
