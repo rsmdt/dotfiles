@@ -109,11 +109,6 @@ return {
 			capabilities = function()
 				local capabilities = vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities())
 
-				if u.has("cmp_nvim_lsp") then
-					capabilities =
-						vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-				end
-
 				if u.has("blink.cmp") then
 					capabilities =
 						vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
