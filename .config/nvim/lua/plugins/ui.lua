@@ -1,5 +1,3 @@
-local icons = require("core.icons")
-
 return {
 	-- fancy scrollbar
 	{
@@ -74,13 +72,9 @@ return {
 		end,
 	},
 
-	-- nice vim.notify replacement
-	--
-	-- Check https://github.com/willothy/nvim-config/blob/b3ec60e6656c22c34aaffe01558f0a146bd82530/lua/configs/ui/noice.lua for Noice integration
-	{
-		"j-hui/fidget.nvim",
-		opts = { notification = { override_vim_notify = true } },
-	},
+	-- Notifications are handled by snacks.notifier (see lua/plugins/editing.lua,
+	-- style = "minimal" for a fidget-like look). LSP progress is handled by noice
+	-- below (lsp.progress.enabled = true).
 
 	-- Highly experimental plugin that completely replaces the UI for messages, cmdline and the popupmenu.
 	-- @see https://github.com/folke/noice.nvim
@@ -116,15 +110,13 @@ return {
 			commands = { all = { view = "popup" } },
 			lsp = {
 				progress = {
-					-- fidget already takes care of this,
-					-- otherwise shows double message
-					enabled = false,
+					-- fidget was removed; noice now owns LSP progress display
+					enabled = true,
 				},
 				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
 				override = {
 					["vim.lsp.utils.convert_input_to_markdown_lines"] = true,
 					["vim.lsp.utils.stylize_markdown"] = true,
-					["cmp.entry.get_documentation"] = true,
 				},
 			},
 
@@ -175,119 +167,9 @@ return {
 		end,
 	},
 
-	-- Add indentation guides even on blank lines, see `:help indent_blankline.txt`
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		dependencies = {
-			{ "nvim-mini/mini.indentscope", version = false },
-		},
-		event = { "User FileOpened" },
-		config = function()
-			local ibl = require("ibl")
-			local indentscope = require("mini.indentscope")
+	-- Indentation guides + scope are provided by snacks.indent
+	-- (see lua/plugins/editing.lua). Replaced indent-blankline.nvim + mini.indentscope.
 
-			local exclude_filetypes = {
-				"help",
-				"alpha",
-				"neo-tree",
-				"Trouble",
-				"trouble",
-				"lazy",
-				"mason",
-				"notify",
-			}
-
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = exclude_filetypes,
-				callback = function()
-					vim.b.miniindentscope_disable = true
-				end,
-			})
-
-			ibl.setup({
-				indent = {
-					char = icons.ui.Line,
-					tab_char = icons.ui.Line,
-				},
-				scope = {
-					enabled = false, -- because we use mini.indentline for this (behaviour is a bit different)
-				},
-				exclude = {
-					filetypes = exclude_filetypes,
-				},
-			})
-
-			indentscope.setup({
-				symbol = icons.ui.Line,
-				draw = {
-					animation = indentscope.gen_animation.none(),
-				},
-				options = {
-					indent_at_cursor = false,
-					try_as_border = true,
-				},
-			})
-		end,
-	},
-
-	-- NeoVim greeter, just open nvim (without file)
-	{
-		"goolord/alpha-nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/plenary.nvim" },
-		-- init = function()
-		-- 	vim.api.nvim_create_autocmd("User", {
-		-- 		group = vim.api.nvim_create_augroup("_alpha_start", { clear = true }),
-		-- 		pattern = "VeryLazy",
-		-- 		nested = true,
-		-- 		callback = function()
-		-- 			require("alpha").start(true)
-		-- 		end,
-		-- 	})
-		-- end,
-		config = function()
-			local startify = require("alpha.themes.startify")
-			startify.file_icons.provider = "devicons"
-
-			startify.section.header.opts.hl = "AlphaHeader"
-			startify.section.top_buttons.val = {
-				startify.button("e", icons.ui.NewFile .. " " .. " New file", "<CMD>ene <BAR> startinsert<CR>"),
-				startify.button("f", icons.ui.Search .. " " .. " Find file", "<CMD>FzfLua files<CR>"),
-				-- startify.button("r", " " .. " Recent files", "<cmd> Telescope oldfiles <cr>"),
-				-- startify.button("g", " " .. " Find text", "<cmd> Telescope live_grep <cr>"),
-				-- startify.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
-			}
-			startify.section.bottom_buttons.val = {
-				startify.button("m", icons.ui.Package .. " " .. " Mason", "<CMD>Mason<CR>"),
-				startify.button("l", icons.ui.Package .. " " .. " Lazy", "<CMD>Lazy<CR>"),
-				startify.button("q", icons.ui.Quit .. " " .. " Quit", "<CMD>q<CR>"),
-			}
-			--
-			-- startify.config.opts.autostart = false
-
-			require("alpha").setup(startify.config)
-
-			-- -- display startup time when available
-			-- vim.api.nvim_create_autocmd("User", {
-			-- 	once = true,
-			-- 	pattern = "LazyVimStarted",
-			-- 	callback = function()
-			-- 		local stats = require("lazy").stats()
-			-- 		local val = "⚡ Neovim loaded "
-			-- 			.. stats.loaded
-			-- 			.. "/"
-			-- 			.. stats.count
-			-- 			.. " plugins in "
-			-- 			.. stats.startuptime
-			-- 			.. "ms"
-			--
-			-- 		startify.section.footer.val = {
-			-- 			{ type = "padding", val = 1 },
-			-- 			{ type = "text", opts = { hl = "Comment" }, val = val },
-			-- 		}
-			--
-			-- 		pcall(vim.cmd.AlphaRedraw)
-			-- 	end,
-			-- })
-		end,
-	},
+	-- The startup greeter is provided by snacks.dashboard
+	-- (see lua/plugins/editing.lua). Replaced alpha-nvim.
 }

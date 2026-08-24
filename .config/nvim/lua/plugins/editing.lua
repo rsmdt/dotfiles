@@ -14,12 +14,73 @@ return {
 			statuscolumn = { enabled = true }, -- Better statuscolumn
 			words = { enabled = true }, -- Highlight word under cursor (like vim-illuminate)
 			-- scroll = { enabled = true }, -- Smooth scrolling (disabled - prefer instant scroll)
-			-- dashboard = { enabled = true },
+
+			-- Indent guides + scope (replaces indent-blankline.nvim + mini.indentscope).
+			-- Default char is "│" (== icons.ui.Line) and special buffers are filtered out.
+			indent = { enabled = true },
+
+			-- Notifications (replaces fidget.nvim). `minimal` = no border, just icon +
+			-- message (the fidget aesthetic); bottom-up placement like fidget.
+			-- NOTE: LSP progress is handled by noice (see lua/plugins/ui.lua).
+			notifier = {
+				enabled = true,
+				style = "minimal",
+				top_down = false,
+			},
+
+			-- Startup screen (replaces alpha-nvim). Two-pane "Advanced" layout from:
+			-- https://github.com/folke/snacks.nvim/blob/main/docs/dashboard.md#advanced
+			-- Left pane: header, keys, startup. Right pane: terminal, recent files,
+			-- projects, git status. Custom buttons preserved via preset.keys.
+			dashboard = {
+				enabled = true,
+				preset = {
+					keys = {
+						{ icon = " ", key = "e", desc = "New file", action = ":ene | startinsert" },
+						{ icon = " ", key = "f", desc = "Find file", action = ":FzfLua files" },
+						{ icon = " ", key = "s", desc = "Restore session", section = "session" },
+						{ icon = " ", key = "m", desc = "Mason", action = ":Mason" },
+						{ icon = " ", key = "l", desc = "Lazy", action = ":Lazy" },
+						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+					},
+				},
+				sections = {
+					{ section = "header" },
+					{
+						pane = 2,
+						section = "terminal",
+						cmd = "colorscript -e square",
+						height = 5,
+						padding = 1,
+						-- colorscript is an optional external tool; hide this pane when absent
+						enabled = function()
+							return vim.fn.executable("colorscript") == 1
+						end,
+					},
+					{ section = "keys", gap = 1, padding = 1 },
+					{ pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+					{ pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+					{
+						pane = 2,
+						icon = " ",
+						title = "Git Status",
+						section = "terminal",
+						enabled = function()
+							return Snacks.git.get_root() ~= nil
+						end,
+						cmd = "git status --short --branch --renames",
+						height = 5,
+						padding = 1,
+						ttl = 5 * 60,
+						indent = 3,
+					},
+					{ section = "startup" },
+				},
+			},
+
 			-- explorer = { enabled = true },
-			-- indent = { enabled = true },
 			-- input = { enabled = true },
 			-- picker = { enabled = true },
-			-- notifier = { enabled = true },
 			-- scope = { enabled = true },
 		},
 		keys = {
