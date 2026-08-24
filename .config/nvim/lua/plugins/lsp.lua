@@ -9,6 +9,7 @@ vim.diagnostic.config({
 	-- 	prefix = "●",
 	-- 	source = true, -- "if_many",
 	-- },
+	virtual_lines = false,
 	severity_sort = true,
 	signs = {
 		text = {
@@ -83,8 +84,16 @@ return {
 				["gi"] = { vim.lsp.buf.implementation, desc = "[G]oto [i]mplementation" },
 				["gt"] = { vim.lsp.buf.type_definition, desc = "Goto [t]ype definition" },
 
-				["[d"] = { vim.diagnostic.goto_prev },
-				["]d"] = { vim.diagnostic.goto_next },
+				["[d"] = {
+					function()
+						vim.diagnostic.jump({ count = -1 })
+					end,
+				},
+				["]d"] = {
+					function()
+						vim.diagnostic.jump({ count = 1 })
+					end,
+				},
 				["<leader>q"] = { vim.diagnostic.setloclist, desc = "Open [Q]uickfix list" },
 
 				["K"] = { vim.lsp.buf.hover, desc = "Show lsp hover" },
@@ -154,35 +163,6 @@ return {
 			-- 	},
 			-- },
 		},
-	},
-
-	-- @see https://git.sr.ht/~whynothugo/lsp_lines.nvim
-	{
-		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-		event = { "VeryLazy" }, -- "User FileOpened"
-		keys = {
-			{
-				"<leader>L",
-				function()
-					vim.diagnostic.config({
-						virtual_text = not vim.diagnostic.config().virtual_text,
-						virtual_lines = not vim.diagnostic.config().virtual_lines,
-					})
-				end,
-				desc = "Toggle LSP [L]ines",
-			},
-		},
-		config = function()
-			vim.diagnostic.config({
-				severity_sort = true,
-				-- keep the default by showing virtual_text, but not the virtual_lines
-				-- it will be swapped when toggling
-				virtual_lines = false,
-				virtual_text = true,
-			})
-
-			require("lsp_lines").setup()
-		end,
 	},
 
 	-- Code outline sidebar powered by LSP.
