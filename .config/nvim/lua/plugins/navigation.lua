@@ -62,6 +62,38 @@ return {
 	-- multiple cursors
 	{ "mg979/vim-visual-multi", lazy = true },
 
+	-- Session management: auto-saves on exit, restores per working directory.
+	-- Also powers the "Restore session" button on the snacks dashboard.
+	-- @see https://github.com/folke/persistence.nvim
+	{
+		"folke/persistence.nvim",
+		event = "BufReadPre",
+		keys = {
+			{
+				"<leader>Ss",
+				function()
+					require("persistence").load()
+				end,
+				desc = "Restore [S]ession (cwd)",
+			},
+			{
+				"<leader>Sl",
+				function()
+					require("persistence").load({ last = true })
+				end,
+				desc = "Restore [S]ession (last)",
+			},
+			{
+				"<leader>Sd",
+				function()
+					require("persistence").stop()
+				end,
+				desc = "[S]ession: stop saving",
+			},
+		},
+		opts = {},
+	},
+
 	-- displays a popup with possible key bindings of the command
 	{
 		"folke/which-key.nvim",
