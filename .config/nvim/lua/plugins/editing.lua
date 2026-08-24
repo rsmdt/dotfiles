@@ -120,6 +120,32 @@ return {
 	-- open file given a line, e.g. vim index.html:20
 	{ "bogado/file-line", event = "User FileOpened" },
 
+	-- Highlight, list, and navigate TODO/FIX/HACK/etc. comments
+	-- @see https://github.com/folke/todo-comments.nvim
+	{
+		"folke/todo-comments.nvim",
+		event = "User FileOpened",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		keys = {
+			{
+				"]t",
+				function()
+					require("todo-comments").jump_next()
+				end,
+				desc = "Next [t]odo comment",
+			},
+			{
+				"[t",
+				function()
+					require("todo-comments").jump_prev()
+				end,
+				desc = "Prev [t]odo comment",
+			},
+			{ "<leader>xt", "<CMD>TodoTrouble<CR>", desc = "[T]odos (Trouble)" },
+		},
+		opts = {},
+	},
+
 	-- Highlight hex colors and Tailwind CSS classes inline
 	-- @see https://github.com/nvim-mini/mini.hipatterns
 	{
@@ -131,11 +157,9 @@ return {
 
 			return {
 				highlighters = {
-					-- Highlight a fixed set of common words. Will be highlighted in any place, not only in comments.
-					fixme = { pattern = "FIXME", group = "MiniHipatternsFixme" },
-					hack = { pattern = "HACK", group = "MiniHipatternsHack" },
-					todo = { pattern = "TODO", group = "MiniHipatternsTodo" },
-					note = { pattern = "NOTE", group = "MiniHipatternsNote" },
+					-- NOTE: TODO/FIXME/HACK/NOTE keyword highlighting is owned by
+					-- todo-comments.nvim (gutter signs + project-wide listing).
+					-- mini.hipatterns focuses on inline color highlighting below.
 
 					-- Highlight hex colors like #ff0000
 					hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
