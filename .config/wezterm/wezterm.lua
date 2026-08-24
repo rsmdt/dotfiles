@@ -10,6 +10,10 @@ config.term = "wezterm"
 config.enable_tab_bar = false
 config.window_close_confirmation = "NeverPrompt"
 config.adjust_window_size_when_changing_font_size = false
+
+-- silence the terminal bell (zsh completion beeps, TUI BEL, etc.)
+-- @see https://wezfurlong.org/wezterm/config/lua/config/audible_bell.html
+config.audible_bell = "Disabled"
 config.window_decorations = "RESIZE"
 config.window_frame = {
 	border_left_width = "5px",
@@ -27,14 +31,16 @@ config.window_frame = {
 -- @see https://wezfurlong.org/wezterm/colorschemes/index.html
 -- @see https://wezfurlong.org/wezterm/config/lua/window/get_appearance.html
 local function scheme_for_appearance(appearance)
-	if appearance:find("Dark") then
-		-- return "cyberdream"
-		return "tokyonight_moon" -- "tokyonight_storm" -- "nightfox"
-	else
-		return "tokyonight_day" -- dayfox
-		-- return "Edge Light (base16)"
-		-- return "Catppuccin Latte"
-	end
+	return "tokyonight_night"
+
+	-- if appearance:find("Dark") then
+	-- 	-- return "cyberdream"
+	-- 	return "tokyonight_night" -- "tokyonight_moon" -- "tokyonight_storm" -- "nightfox"
+	-- else
+	-- 	return "tokyonight_day" -- dayfox
+	-- 	-- return "Edge Light (base16)"
+	-- 	-- return "Catppuccin Latte"
+	-- end
 end
 
 config.mouse_bindings = {
