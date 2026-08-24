@@ -1,158 +1,71 @@
 # CLAUDE.md
 
-## Quick Reference
+## 1. Scope Discipline
 
-### Core Principles
-- Test-Driven Development (TDD) is mandatory - Red, Green, Refactor
-- Make sensible defaults, state assumptions inline
-- Functions under 20 lines, single responsibility
-- Security over performance, tests over speed
-- Read files and documentation thoroughly - no skimming or assuming
-- **Never lie or invent realities** - Everything stated must be fact-based
-- **When making estimates or assumptions, explicitly outline them as such**
-- **Distinguish between measured data and theoretical analysis**
+**Read only what I name. Ask before reading more.**
 
-### Common Commands
-```bash
-npm test          # Run tests
-npm run lint      # Lint with fix
-npm run typecheck # TypeScript check
-git status        # Check changes
-git diff          # Review changes
-```
+- Read the files I explicitly name or point to — nothing else.
+- Never open extra files to "get context", "understand the project", or "see how things connect".
+- If reading more would help, ask in one sentence — "Want me to also read X?" — then wait for my answer.
+- Applies to every task. No exceptions for "just checking" or "a quick look".
 
-### Priority Order
-1. Security over performance
-2. Tests over development speed
-3. Readability over cleverness
-4. Explicit over implicit
+Two exceptions, and only these two:
+- The file you are about to edit — read it first.
+- Callers of code I asked you to change — grep for them and read them (see §4).
 
-## Architecture & Design
+## 2. Think Before Coding
 
-### Domain-Driven Design
-- Model business concepts explicitly
-- Use ubiquitous language from domain
-- Encapsulate business rules in domain layer
-- Keep domain free of framework dependencies
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
 
-### Design Principles
-- SOLID principles apply
-- Prefer composition over inheritance
-- Program to interfaces, not implementations
-- Dependency injection for testability
-- No barrel exports - always import from specific files
+- State assumptions explicitly before implementing.
+- Name what's confusing instead of guessing — never pick silently between readings.
+- Present multiple interpretations when they exist; let me choose.
+- Push back when a simpler approach exists.
+- Surface blockers when you hit them; never route around one silently.
 
-## Development Workflow
+## 3. Simplicity First
 
-### File and Documentation Reading
-- Always read files completely - never skim or assume content
-- Read all relevant documentation before implementing
-- Verify understanding by checking specific details
-- Don't make assumptions about file contents
+**Minimum code that solves the stated problem. Nothing speculative.**
 
-### Test-Driven Development
-1. **Red**: Write failing test for desired behavior
-2. **Green**: Write minimal code to pass
-3. **Refactor**: Improve structure, keep tests green
+- Match the scale of the solution to the scale of the request.
+- Rewrite when 200 lines could be 50.
+- No features, abstractions, flexibility, or configurability I didn't ask for.
+- No error handling for scenarios that can't happen.
 
-### Git Workflow
-- Small, focused commits
-- Never commit broken code
-- Never commit unless explicitly instructed
+## 4. Surgical Changes
 
-### Git Commit Messages
-- Short and concise
-- Intent-based: explain WHY, not WHAT changed
-- Never list files added/changed/removed (git shows this)
-- Use conventional commit style headlines
-- Examples:
-  - ✅ `feat: Supports dark mode toggle`
-  - ✅ `fix: Prevents duplicate form submissions`
-  - ❌ `feat: Added dark mode toggle to settings.tsx and theme.ts`
-  - ❌ `Generated with Claude Code`
+**Touch only what you must. Clean up only your own mess.**
 
-### Code Review Focus
-- Test coverage and quality
-- Security vulnerabilities
-- Performance implications
-- Maintainability
+- Grep for all callers before changing a function's signature or behavior.
+- Match existing style, even if you'd do it differently.
+- Remove imports, variables, and functions that *your* changes orphaned.
+- Every change must trace directly to my request — no "improving" adjacent code, comments, or formatting.
+- Mention pre-existing dead code; never delete it unless I ask.
 
-## Code Standards
+## 5. Goal-Driven Execution
 
-### Naming Conventions
-- Intention-revealing: `calculateTotalPrice()` not `calc()`
-- No abbreviations: `userRepository` not `userRepo`
-- Boolean prefixes: `is`, `has`, `can`, `should`
-- Consistent terminology throughout
+**Define the check before you start. Loop until it passes.**
 
-### Function Design
-- Single responsibility per function
-- Validate inputs at boundaries
-- Return early for edge cases
-- Handle errors explicitly
+- Turn the task into a verifiable goal first:
+  - "Add validation" → "Write tests for invalid inputs, then make them pass"
+  - "Fix the bug" → "Write a test that reproduces it, then make it pass"
+  - "Refactor X" → "Ensure tests pass before and after"
+- Reject weak criteria like "make it work" — name the concrete check instead.
+- For multi-step tasks, state the plan as `N. [step] → verify: [check]` lines.
+- Never report work complete without running the verification you defined.
 
-### Error Handling
-- Validate inputs with specific messages
-- Create custom error types
-- Include context: what failed, expected values
-- Generic messages to users, details in logs
+## 6. Self-Documenting Code
 
-### Security Practices
-- Never hardcode secrets
-- Validate all inputs
-- Use parameterized queries
-- Principle of least privilege
-- Sanitize outputs for context
+**Code speaks for itself. A comment is a design failure, not documentation.**
 
-## Testing Strategy
+- Names carry the meaning — classes, functions, variables, and types must make intent obvious without commentary.
+- Zero comments in code you write: no explanations, section headers, docstrings, or change summaries.
+- The urge to comment is a signal: rename or extract until the urge disappears.
+- "Condensed" comments are still comments. The target is zero, not fewer.
+- Mechanical annotations only when required to work: shebangs, tool directives (`eslint-disable`, `noqa`, `# type: ignore`), language-mandated syntax.
+- Before finishing an edit, scan your diff — any added comment line means the edit isn't done.
+- Existing comments in touched files stay; never delete unless I ask.
 
-### Test Organization
-- One behavior per test
-- Test through public interfaces
-- Keep tests independent
-- Co-locate with source files
+---
 
-### Mock Boundaries
-- Mock external dependencies only
-- Never mock internal code
-- Test behavior, not implementation
-- Use descriptive test names
-
-### Coverage Requirements
-- Test edge cases: null, empty, boundaries
-- Test error conditions
-- Test async operations
-- Avoid testing framework code
-
-## Performance & Optimization
-
-### Optimization Process
-- Measure before optimizing
-- Profile actual bottlenecks
-- Clear code first, optimize proven hot paths
-- Document performance decisions
-
-### Resource Management
-- Clean up resources
-- Batch operations when possible
-- Implement caching strategically
-- Use lazy loading patterns
-
-### Data Handling
-- Arrays for iteration
-- Maps for lookups
-- Sets for uniqueness
-- Async/await for I/O
-
-## Never Do
-- Create files without necessity
-- Add comments without purpose
-- Commit without user request
-- Mock internal application code
-- Leave code in broken state
-- Log or expose secrets
-- Make assumptions about frameworks
-- Implement backwards compatibility unless explicitly requested
-- Maintain deprecated patterns or legacy code paths
-- Add compatibility layers for old versions
-- Use barrel exports (index.ts) - always import from specific files
+@RTK.md
