@@ -23,6 +23,20 @@ brew bundle --global
 #   defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
 # fi
 
+if which bat >/dev/null; then
+  echo "${DIVIDER}\n[YADM] Installing bat syntax themes"
+  BAT_THEMES_DIR="$(bat --config-dir)/themes"
+  mkdir -p "$BAT_THEMES_DIR"
+  for theme in tokyonight_moon tokyonight_day; do
+    curl -fsSL -o "$BAT_THEMES_DIR/$theme.tmTheme" \
+      "https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/$theme.tmTheme" \
+      || echo "[YADM] WARNING: failed to download bat theme '$theme'"
+  done
+  bat cache --build
+  bat --list-themes | grep -qx tokyonight_moon \
+    || echo "[YADM] WARNING: bat theme 'tokyonight_moon' missing after cache build (bat will warn and fall back to default)"
+fi
+
 if [ ! -d ~/.config/tmux/plugins/tpm ]; then
   echo "${DIVIDER}\n[YADM] Tmux setup"
   git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
