@@ -328,15 +328,16 @@ return {
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		config = {},
+		opts = {},
 	},
 
-	{ "sindrets/diffview.nvim" },
+	{ "sindrets/diffview.nvim", cmd = { "DiffviewOpen", "DiffviewFileHistory" } },
 
 	-- An interactive and powerful Git interface for Neovim, inspired by Magit
 	-- https://github.com/NeogitOrg/neogit
 	{
 		"NeogitOrg/neogit",
+		cmd = "Neogit",
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- required
 			"sindrets/diffview.nvim", -- optional - Diff integration
@@ -506,6 +507,7 @@ return {
 	-- Show context of the current function
 	{
 		"nvim-treesitter/nvim-treesitter-context",
+		event = "User FileOpened",
 		opts = { mode = "cursor", max_lines = 3 },
 		keys = {
 			{
