@@ -579,7 +579,26 @@ return {
 
 	{
 		"3rd/diagram.nvim",
-		dependencies = { "3rd/image.nvim" },
+		dependencies = {
+			-- Image backend for in-editor mermaid rendering. Requires (see README setup):
+			--   * a kitty-graphics terminal — WezTerm ✓ (backend = "kitty")
+			--   * ImageMagick CLI for the processor (brew install imagemagick)
+			--   * tmux `set -gq allow-passthrough on` to tunnel the graphics protocol
+			-- @see https://github.com/3rd/image.nvim
+			{
+				"3rd/image.nvim",
+				lazy = true,
+				opts = {
+					backend = "kitty", -- WezTerm speaks the kitty graphics protocol
+					processor = "magick_cli", -- ImageMagick CLI processor (no luarocks needed)
+					integrations = {}, -- diagram.nvim drives rendering; no auto image inlining
+					max_width = 100,
+					max_height = 12,
+					window_overlap_clear_enabled = true, -- hide images when covered by floats/splits
+					tmux_show_only_in_active_window = true,
+				},
+			},
+		},
 		opts = {
 			-- integrations = {
 			-- 	require("diagram.integrations.markdown"),
@@ -607,6 +626,25 @@ return {
 				desc = "Show diagram in new tab",
 			},
 		},
+	},
+
+	-- Browser-based markdown preview with live reload + interactive Mermaid diagrams.
+	-- Complements the in-editor path (diagram.nvim + image.nvim): this one renders in a
+	-- browser via mermaid.js, so it works under tmux and needs no image backend / mmdc.
+	-- Pure Lua (no Node/npm build step); diagrams render client-side from a CDN.
+	-- @see https://github.com/selimacerbas/markdown-preview.nvim
+	{
+		"selimacerbas/markdown-preview.nvim",
+		dependencies = { "selimacerbas/live-server.nvim" },
+		ft = "markdown",
+		cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewRefresh" },
+		keys = {
+			{ "<leader>mp", "<CMD>MarkdownPreview<CR>", ft = "markdown", desc = "[M]arkdown [p]review (browser)" },
+			{ "<leader>ms", "<CMD>MarkdownPreviewStop<CR>", ft = "markdown", desc = "[M]arkdown preview [s]top" },
+		},
+		config = function()
+			require("markdown_preview").setup()
+		end,
 	},
 
 	-- Snapshot plugin with rich features that can make pretty code snapshots for Neovim
