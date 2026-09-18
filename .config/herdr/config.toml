@@ -1,11 +1,20 @@
 onboarding = false
 
+[theme]
+auto_switch = false
+dark_name = "tokyo-night"
+light_name = "tokyo-night-day"
+
+name = "terminal"
+
 [ui]
+pane_borders = "always"
 show_agent_labels_on_pane_borders = true
 agent_panel_scope = "all"
 
 agent_panel_sort = "spaces"
-status_indicators = "symbols"
+status_indicators = "dots"
+prompt_new_tab_name = false
 
 sidebar_width           = 26      # auto-scales to workspace names
 sidebar_min_width       = 18
@@ -35,6 +44,15 @@ rows = [
   ["branch", "git_status"],
 ]
 
+[ui.toast.clipboard]
+enabled = false
+
+[experimental]
+pane_history = true
+
+[session]
+resume_agents_on_restore = false
+
 [keys]
 prefix = "ctrl+b"
 
@@ -61,8 +79,8 @@ new_tab       = ["prefix+c", "alt+c"]
 close_pane    = ["prefix+x", "alt+x"]
 new_workspace = ["prefix+shift+n", "alt+n"]
 
-goto     = ["prefix+s", "prefix+g", "alt+s"]
-settings = "prefix+shift+s"
+# goto     = ["prefix+s", "prefix+g", "alt+s"]
+# settings = "prefix+shift+s"
 
 [[keys.command]]
 key = "shift+alt+up"
