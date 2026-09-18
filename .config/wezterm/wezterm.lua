@@ -31,16 +31,16 @@ config.window_frame = {
 -- @see https://wezfurlong.org/wezterm/colorschemes/index.html
 -- @see https://wezfurlong.org/wezterm/config/lua/window/get_appearance.html
 local function scheme_for_appearance(appearance)
-	return "tokyonight_night"
+	-- return "tokyonight_night"
 
-	-- if appearance:find("Dark") then
-	-- 	-- return "cyberdream"
-	-- 	return "tokyonight_night" -- "tokyonight_moon" -- "tokyonight_storm" -- "nightfox"
-	-- else
-	-- 	return "tokyonight_day" -- dayfox
-	-- 	-- return "Edge Light (base16)"
-	-- 	-- return "Catppuccin Latte"
-	-- end
+	if appearance:find("Dark") then
+		-- return "cyberdream"
+		return "tokyonight_night" -- "tokyonight_moon" -- "tokyonight_storm" -- "nightfox"
+	else
+		return "tokyonight_day" -- dayfox
+		-- return "Edge Light (base16)"
+		-- return "Catppuccin Latte"
+	end
 end
 
 config.mouse_bindings = {
