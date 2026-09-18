@@ -34,6 +34,7 @@ zinit update
 
 - [`Raycast`](https://www.raycast.com/) blazingly fast, totally extendable launcher
 - [`Logseq`](https://logseq.com/) privacy-first, open-source platform for knowledge management and collaboration
+- [`Lunar`](https://lunar.fyi/) adaptive brightness and control for external displays
 - [`WezTerm`](https://wezfurlong.org/wezterm/) powerful cross-platform terminal emulator and multiplexer written in Rust
 - [`NeoVim`](https://neovim.io/) hyperextensible Vim-based text editor
 - [`yabai`](https://github.com/koekeishiya/yabai) tiling window manager for macOS based on binary space partitioning
@@ -45,11 +46,13 @@ Check `~/.zshrc` for more details
 
 - [`bat`](https://github.com/sharkdp/bat) better `cat` with syntax highlighting and git integration
 - [`btop`](https://github.com/aristocratos/btop) better `top` resource monitor
+- [`difftastic`](https://difftastic.wilfred.me.uk/) structural diff that understands syntax
 - [`duf`](https://github.com/muesli/duf) better `df` free disk space utility
 - [`dust`](https://github.com/bootandy/dust) better `du` disk usage statistics
-- [`delta`](https://github.com/dandavison/delta) syntax-highlighting pager for git, diff, grep, and blame output
 - [`fzf`](https://junegunn.github.io/fzf/) command-line fuzzy finder
 - [`git`](https://git-scm.com/) distributed version control system (integrated with
+- [`herdr`](https://herdr.dev) agent multiplexer that lives in your terminal
+- [`hunk`](https://www.hunk.dev) syntax-highlighting pager and difftool for git
 - [`lsd`](https://github.com/lsd-rs/lsd) better `ls` with colors, icons, tree-view, more formatting options
 - [`mise`](https://mise.jdx.dev/) the polyglot tool version manager
 - [`ripgrep`](https://github.com/BurntSushi/ripgrep) recursively searches directories for a regex pattern while respecting your gitignore
