@@ -11,29 +11,16 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 # Local bin directory for user scripts
 export PATH="$HOME/.local/bin:$PATH"
 
-# TODO: https://github.com/tmuxinator/tmuxinator
-if [[ $+commands[tmux] == "1" ]]; then
-  # Automatically run tmux every time zsh is loaded
-  : ${TMUX_AUTOSTART:=true}
-  # Exit terminal when tmux session exits
-  : ${TMUX_AUTOQUIT:=false}
+# Flag for interactive TTY sessions
+# Use this to guard command overloads (cd, rm, etc.) that shouldn't run in automation
+_is_user_tty=false
+[[ -o interactive && -t 1 ]] && _is_user_tty=true
 
-  # Run the below if enabled and not already in tmux, vim, etc.
-  # Also check for: interactive shell, proper TTY, and not a dumb terminal
-  if [[ "$TMUX_AUTOSTART" == "true" && -z "$TMUX" && -z "$VIM" && -o interactive && -t 0 && -t 1 && "$TERM" != "dumb" ]]; then
-    tmux new-session -A # -s home
-
-    if [[ "$TMUX_AUTOQUIT" == "true" ]]; then
-      exit
-    fi
-  fi
-fi
-
-# # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# # Initialization code that may require console input (password prompts, [y/n]
-# # confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# if (( $+commands[herdr] )); then
+#   : ${HERDR_AUTOSTART:=true}
+#   if [[ "$HERDR_AUTOSTART" == "true" && -z "$HERDR_ENV" && -z "$TMUX" && -z "$VIM" && -o interactive && -t 0 && -t 1 && "$TERM" != "dumb" ]]; then
+#     herdr
+#   fi
 # fi
 
 if [[ $+commands[brew] == "0" ]]; then
@@ -70,8 +57,6 @@ fi
 
 source "${ZINIT_HOME}/zinit.zsh"
 
-# zinit ice depth=1; zinit light romkatv/powerlevel10k
-
 ##
 # Zinit plugins with Turbo mode optimization
 # @see https://zdharma-continuum.github.io/zinit/wiki/INTRODUCTION/
@@ -81,7 +66,8 @@ source "${ZINIT_HOME}/zinit.zsh"
 # depth=1 = shallow clone for faster install
 #
 
-# fzf-tab must load synchronously (needed for first tab completion)
+# fzf-tab is turbo loaded; until it lands, tab falls back to zsh's own menu
+zinit ice wait lucid
 zinit light Aloxaf/fzf-tab
 
 # Syntax highlighting - turbo loaded
@@ -94,7 +80,7 @@ zinit ice wait lucid depth=1 atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
 # Extra completions - turbo loaded, blockf prevents fpath modification issues
-zinit ice wait lucid depth=1 blockf atpull'zinit creinstall -q .'
+zinit ice wait lucid depth=1 blockf atpull'zinit creinstall -q .; zinit cclear'
 zinit light zsh-users/zsh-completions
 
 # OMZ snippets - turbo loaded for non-critical features
@@ -109,6 +95,7 @@ zinit snippet OMZ::plugins/colored-man-pages
 autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
   compinit
+  touch ~/.zcompdump
 else
   compinit -C  # Use cached completions without security check
 fi
@@ -133,9 +120,6 @@ if [[ $+commands[oh-my-posh] == "1" ]]; then
   eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/daywalker.toml)"
 fi
 
-# # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 # fzf-tab configuration
 #
 # disable sort when completing `git checkout`
@@ -154,7 +138,7 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --oneline --color=always --tree
 # # make use of tmux popup
 # zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
-alias rm='rm -I'
+[[ "$_is_user_tty" == "true" ]] && alias rm='rm -I'
 
 # Preferred editor for local and remote sessions
 #   brew install nvim
@@ -228,7 +212,7 @@ if [[ $+commands[eza] == "1" ]]; then
   alias l="ls --oneline"
   alias ll="ls --long --git"
   alias la="l --all"
-  alias lt="l --tree --level=3 --ignore-glob='.git|node_modules'"
+  alias lt="l --tree --level=5 --ignore-glob='.git|node_modules'"
 else
   echo "Get better ls output with: brew install eza"
 
@@ -250,29 +234,22 @@ fi
 # better cd
 #   brew install zoxide
 # @see https://github.com/ajeetdsouza/zoxide
-if [[ $+commands[zoxide] == "1" ]]; then
-  # Cache zoxide init for faster startup (~5ms saved)
-  _zoxide_cache="$HOME/.cache/zoxide-init.zsh"
-  if [[ ! -f "$_zoxide_cache" ]]; then
-    mkdir -p "$HOME/.cache"
-    zoxide init zsh --cmd cd > "$_zoxide_cache"
-  fi
-  source "$_zoxide_cache"
-  unset _zoxide_cache
+if [[ $+commands[zoxide] == "1" && "$_is_user_tty" == "true" ]]; then
+  eval "$(zoxide init zsh --cmd cd)"
 fi
 
 # Command-line fuzzy finder
 #   brew install fzf
 # @see https://github.com/junegunn/fzf
 if [[ $+commands[fzf] == "1" ]]; then
-  # Cache fzf init for faster startup (~10ms saved)
-  _fzf_cache="$HOME/.cache/fzf-init.zsh"
-  if [[ ! -f "$_fzf_cache" ]]; then
-    mkdir -p "$HOME/.cache"
-    fzf --zsh > "$_fzf_cache"
-  fi
-  source "$_fzf_cache"
-  unset _fzf_cache
+  # Options to fzf command
+  export FZF_COMPLETION_OPTS='--border --info=inline'
+  # Options for path completion (e.g. vim **<TAB>)
+  export FZF_COMPLETION_PATH_OPTS='--walker file,dir,follow,hidden'
+  # Options for directory completion (e.g. cd **<TAB>)
+  export FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
+
+  source <(fzf --zsh)
 
   # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
   # - The first argument to the function ($1) is the base path to start traversal
@@ -295,8 +272,8 @@ if [[ $+commands[fzf] == "1" ]]; then
 
     case "$command" in
       cd) fzf --preview 'eza --group-directories-first --color=always --icons --tree --level=2 {} | head -200' "$@" ;;
-      # *)  fzf --preview "bat -n --color=always --line-range :500 {}" "$@" ;;
-      *)  fzf "$@" ;;
+      *)  fzf --preview 'bat -n --color=always {}' "$@" ;;
+      # *)  fzf "$@" ;;
     esac
   }
 fi
