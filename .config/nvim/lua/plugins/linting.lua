@@ -1,8 +1,16 @@
 local utils = require("core.utils")
 
+local events = { "BufWritePost", "BufReadPost" } -- "InsertLeave"
+
 local M = {}
 
+M.enabled = true
+
 function M.lint()
+	if not M.enabled then
+		return
+	end
+
 	local lint = require("lint")
 	-- Use nvim-lint's logic first:
 	-- * checks if linters exist for the full filetype first
@@ -35,8 +43,37 @@ function M.lint()
 	if #names == 0 then
 		vim.notify("No linters defined", vim.log.levels.WARN, { title = "lint" })
 	else
-		-- vim.notify("Linting with " .. table.concat(names, ", "), vim.log.levels.INFO, { title = "lint" })
+		vim.notify("Linting with " .. table.concat(names, ", "), vim.log.levels.INFO, { title = "lint" })
 		lint.try_lint(names)
+	end
+end
+
+local function clear_lint_diagnostics()
+	local lint = require("lint")
+	for _, names in pairs(lint.linters_by_ft) do
+		for _, name in ipairs(names) do
+			vim.diagnostic.reset(lint.get_namespace(name))
+		end
+	end
+end
+
+function M.enable()
+	M.enabled = true
+	vim.notify("Linting enabled", vim.log.levels.INFO, { title = "lint" })
+	M.lint()
+end
+
+function M.disable()
+	M.enabled = false
+	clear_lint_diagnostics()
+	vim.notify("Linting disabled", vim.log.levels.INFO, { title = "lint" })
+end
+
+function M.toggle()
+	if M.enabled then
+		M.disable()
+	else
+		M.enable()
 	end
 end
 
@@ -45,7 +82,9 @@ return {
 	-- below is taken from https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/linting.lua
 	{
 		"mfussenegger/nvim-lint",
-		event = { "BufWritePost", "BufReadPost", "InsertLeave" },
+		dependencies = { "mason-org/mason.nvim" },
+		event = events,
+		cmd = { "Lint", "LintEnable", "LintDisable", "LintToggle" },
 		keys = {
 			{ "<leader>l", "<CMD>Lint<CR>", desc = "[L]int code" },
 		},
@@ -95,8 +134,13 @@ return {
 				end
 			end
 
+			vim.api.nvim_create_user_command("LintEnable", M.enable, {})
+			vim.api.nvim_create_user_command("LintDisable", M.disable, {})
+			vim.api.nvim_create_user_command("LintToggle", M.toggle, {})
+
 			vim.api.nvim_create_user_command("Lint", utils.debounce(150, M.lint), {})
-			vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+
+			vim.api.nvim_create_autocmd(events, {
 				group = vim.api.nvim_create_augroup("_lint", { clear = true }),
 				command = "Lint",
 			})

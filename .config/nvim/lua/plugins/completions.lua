@@ -79,8 +79,14 @@ return {
 			},
 
 			cmdline = {
-				keymap = { preset = "inherit" },
-				completion = { menu = { auto_show = true } },
+				keymap = {
+					preset = "inherit",
+					["<CR>"] = { "accept_and_enter", "fallback" },
+				},
+				completion = {
+					list = { selection = { preselect = false, auto_insert = false } },
+					menu = { auto_show = true },
+				},
 			},
 
 			fuzzy = { implementation = "prefer_rust_with_warning" },

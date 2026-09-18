@@ -26,6 +26,19 @@ return {
 				enabled = true,
 				style = "minimal",
 				top_down = false,
+				width = { min = 0, max = 0.4 },
+				icons = {
+					error = "  ",
+					warn = "  ",
+					info = "  ",
+					debug = "  ",
+					trace = "  ",
+				},
+			},
+			styles = {
+				notification = {
+					wo = { winblend = 100 },
+				},
 			},
 
 			-- Startup screen (replaces alpha-nvim). Two-pane "Advanced" layout from:
@@ -105,7 +118,24 @@ return {
 				end,
 				desc = "Toggle Word Highlighting",
 			},
+			{
+				"<leader>un",
+				function()
+					require("snacks").notifier.hide()
+				end,
+				desc = "Dismiss All Notifications",
+			},
 		},
+		init = function()
+			local function link_notifier_text_to_comment()
+				vim.api.nvim_set_hl(0, "SnacksNotifierMinimal", { link = "Comment" })
+			end
+			link_notifier_text_to_comment()
+			vim.api.nvim_create_autocmd("ColorScheme", {
+				group = vim.api.nvim_create_augroup("_snacks_notifier_hl", { clear = true }),
+				callback = link_notifier_text_to_comment,
+			})
+		end,
 	},
 
 	--- Enhance builtin native comments
