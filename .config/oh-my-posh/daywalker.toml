@@ -1,6 +1,7 @@
 console_title_template = ' {{ .Folder }} :: {{if .Root}}Admin{{end}}'
 version = 3
 final_space = true
+async = true
 
 [palette]
   t-green = '#50FA7B' # #73daca' # '#9ece6a'
@@ -75,7 +76,7 @@ final_space = true
     style = "plain"
     template = " {{ .FormattedMs }} "
     foreground = "yellow"
-    
+
     [blocks.segments.properties]
       threshold = 500  # Only show for commands taking longer than 500ms
       style = "austin"
@@ -126,10 +127,10 @@ final_space = true
   #     command = 'git log --pretty=format:%cr -1 || date +%H:%M:%S'
   #     shell = 'bash'
 
-  [[blocks.segments]]
-    type = 'time'
-    style = 'plain'
-    template = ' {{ .CurrentDate | date .Format }} '
+  # [[blocks.segments]]
+  #   type = 'time'
+  #   style = 'plain'
+  #   template = ' {{ .CurrentDate | date .Format }} '
     # foreground = 'p:t-white'
 
 [[blocks]]
